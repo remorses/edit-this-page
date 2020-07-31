@@ -5,7 +5,7 @@ import addJsxAttrs from '@svgr/babel-plugin-add-jsx-attribute'
 import { getGitConfigSync } from 'get-git-config'
 
 export const SOURCE_CODE_VARIABLE = 'SOURCE_CODE_FOR_EDIT_BUTTON'
-export const TAG_NAME = 'EditThisPage'
+export const TAG_NAME = 'EditThisPageButton'
 
 export type PluginOptions = {
     values: { value: string; newValue: string; literal?: boolean }[]
@@ -24,10 +24,15 @@ export const babelPlugin = (
             Program: {
                 enter(path, state) {
                     const code: string = state.file.code
-                    if (code.search(TAG_NAME) === -1) {
-                        // debug('skipping')
+                    if (
+                        path.node.alreadyChecked ||
+                        code.search(TAG_NAME) === -1
+                    ) {
+                        debug('skipping')
+                        path.node.alreadyChecked = true
                         return
                     }
+                    path.node.alreadyChecked = true
                     const codeToInsert = `var ${SOURCE_CODE_VARIABLE} = ${JSON.stringify(
                         code,
                     )};`
@@ -60,6 +65,7 @@ export const babelPlugin = (
                             spread: false,
                             position: 'end',
                         },
+                        // TODO the source code should be imported dynamically to not increase bundle size, use an import() that returns a promise
                         {
                             name: 'sourceCode',
                             value: SOURCE_CODE_VARIABLE,

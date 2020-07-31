@@ -1,13 +1,27 @@
 // @jsx jsx
 import Modal from 'react-overlays/Modal'
 
-import React, { useState } from 'react'
+import React, { useState, ReactNode } from 'react'
 import { jsx, css } from '@emotion/core'
+
+jsx
 
 // we use some pseudo random coords so nested modals
 // don't sit right on top of each other.
 
-export function EditThisPageButton() {
+export type HiddenProps = {
+    filePath: string
+    gitRemote: string
+    sourceCode: string
+}
+
+export type EditThisPageButtonProps = { children?: ReactNode }
+
+export function EditThisPageButton(props: EditThisPageButtonProps) {
+    console.log(props)
+
+    let extendedProps: HiddenProps = props as any
+
     const [show, setShow] = useState(false)
 
     const renderBackdrop = (props) => (
@@ -25,7 +39,6 @@ export function EditThisPageButton() {
             {...props}
         />
     )
-
     return (
         <div className='modal-example'>
             <button
@@ -39,11 +52,13 @@ export function EditThisPageButton() {
 
             <Modal
                 css={css`
+                    box-sizing: content-box;
                     position: fixed;
-                    width: 400px;
+                    width: 10vw;
+                    height: 10vh;
+                    padding: 40px;
                     z-index: 1040;
-                    top: 50%;
-                    left: 50%;
+
                     border: 1px solid #e5e5e5;
                     background-color: white;
                     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
@@ -56,10 +71,7 @@ export function EditThisPageButton() {
             >
                 <div>
                     <h4 id='modal-label'>Text in a modal</h4>
-                    <p>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor
-                        ligula.
-                    </p>
+                    <pre>{extendedProps.sourceCode}</pre>
                     {/* <EditOverly /> */}
                 </div>
             </Modal>

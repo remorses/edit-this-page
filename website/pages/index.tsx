@@ -4,9 +4,5 @@ import Head from 'next/head'
 import { EditThisPageButton } from 'edit-this-page/src'
 
 export default function Page(props) {
-    return (
-        <Wrapper>
-            <EditThisPageButton />
-        </Wrapper>
-    )
+    return <EditThisPageButton />
 }

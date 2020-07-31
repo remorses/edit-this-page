@@ -48,10 +48,11 @@
         "react-dom": "*"
     },
     "dependencies": {
-        "@babel/core": "^7.9.0",
-        "@babel/traverse": "^7.9.0",
-        "@babel/types": "^7.9.0",
+        "@babel/core": "^7.11.0",
+        "@babel/traverse": "^7.11.0",
+        "@babel/types": "^7.11.0",
         "@svgr/babel-plugin-add-jsx-attribute": "^5.4.0",
+        "emotion-normalize": "^10.1.0",
         "get-git-config": "^0.0.2",
         "react-overlays": "^4.1.0"
     }

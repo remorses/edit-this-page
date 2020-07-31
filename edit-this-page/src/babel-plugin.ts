@@ -7,6 +7,8 @@ import { getGitConfigSync } from 'get-git-config'
 export const SOURCE_CODE_VARIABLE = 'SOURCE_CODE_FOR_EDIT_BUTTON'
 export const TAG_NAME = 'EditThisPageButton'
 
+const ALREADY_CHECKED = '_ALREADY_CHECKED_'
+
 export type PluginOptions = {
     values: { value: string; newValue: string; literal?: boolean }[]
 }
@@ -14,7 +16,7 @@ export type PluginOptions = {
 const debug = console.log
 
 export const babelPlugin = (
-    babel: { types: typeof BabelTypes; template; parse },
+    babel: { types: typeof BabelTypes; template; parse; transformFromAstSync },
     { values = [] }: PluginOptions,
 ): { visitor: Visitor<any> } => {
     const { types: t, template } = babel
@@ -25,23 +27,23 @@ export const babelPlugin = (
                 enter(path, state) {
                     const code: string = state.file.code
                     if (
-                        path.node.alreadyChecked ||
+                        path.node[ALREADY_CHECKED] ||
                         code.search(TAG_NAME) === -1
                     ) {
                         debug('skipping')
-                        path.node.alreadyChecked = true
+                        path.node[ALREADY_CHECKED] = true
                         return
                     }
-                    path.node.alreadyChecked = true
+                    path.node[ALREADY_CHECKED] = true
                     const codeToInsert = `var ${SOURCE_CODE_VARIABLE} = ${JSON.stringify(
                         code,
-                    )};`
+                    )};\n`
                     // this.file.code = codeToInsert + '\n' + this.file.code
                     debug('adding top level source code variable')
                     path.unshiftContainer(
                         'body',
                         parse(codeToInsert, {
-                            filename: state.file.opts.filename,
+                            filename: '',
                         }).program.body[0],
                     )
 
@@ -75,7 +77,7 @@ export const babelPlugin = (
                         },
                     ]
                     debug('running babel-plugin-add-jsx-attribute')
-                    const res = transformFromAstSync(
+                    const res = babel.transformFromAstSync(
                         path.node,
                         this.file.code,
                         {

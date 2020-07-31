@@ -1,8 +1,22 @@
+/** @jsx jsx */
+
+import { css, jsx } from '@emotion/core'
 import { Wrapper } from 'dokz/dist'
-import React, { Fragment } from 'react'
-import Head from 'next/head'
-import { EditThisPageButton } from 'edit-this-page/src'
+import { EditThisPageButton } from 'edit-this-page/dist'
+
+jsx
 
 export default function Page(props) {
-    return <EditThisPageButton />
+    return (
+        <Wrapper>
+            <EditThisPageButton />
+            <div
+                css={css`
+                    width: 100px;
+                    height: 100px;
+                    background: red;
+                `}
+            />
+        </Wrapper>
+    )
 }

@@ -7,7 +7,7 @@ import { jsx, css } from '@emotion/core'
 // we use some pseudo random coords so nested modals
 // don't sit right on top of each other.
 
-export function EditOverly() {
+export function EditThisPageButton() {
     const [show, setShow] = useState(false)
 
     const renderBackdrop = (props) => (

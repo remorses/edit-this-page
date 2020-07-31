@@ -73,7 +73,7 @@ export const babelPlugin = (
                         path.node,
                         this.file.code,
                         {
-                            filename: '',
+                            filename: state.file.opts.filename,
                             ast: true,
                             plugins: [
                                 // '@babel/plugin-syntax-jsx',

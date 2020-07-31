@@ -52,6 +52,7 @@
         "@babel/traverse": "^7.9.0",
         "@babel/types": "^7.9.0",
         "@svgr/babel-plugin-add-jsx-attribute": "^5.4.0",
-        "get-git-config": "^0.0.2"
+        "get-git-config": "^0.0.2",
+        "react-overlays": "^4.1.0"
     }
 }

@@ -1,17 +1,19 @@
-import { transformFromAstSync } from '@babel/core'
+import { transformFromAstSync, parse } from '@babel/core'
 import { Visitor } from '@babel/traverse'
 import * as BabelTypes from '@babel/types'
 import addJsxAttrs from '@svgr/babel-plugin-add-jsx-attribute'
 import { getGitConfigSync } from 'get-git-config'
 
 export const SOURCE_CODE_VARIABLE = 'SOURCE_CODE_FOR_EDIT_BUTTON'
-export const TAG_NAMES = ['EditThisPage']
+export const TAG_NAME = 'EditThisPage'
 
 export type PluginOptions = {
     values: { value: string; newValue: string; literal?: boolean }[]
 }
 
-export const plugin = (
+const debug = console.log
+
+export const babelPlugin = (
     babel: { types: typeof BabelTypes; template; parse },
     { values = [] }: PluginOptions,
 ): { visitor: Visitor<any> } => {
@@ -21,25 +23,23 @@ export const plugin = (
         visitor: {
             Program: {
                 enter(path, state) {
-                    const code: string = this.file.code
+                    const code: string = state.file.code
+                    if (code.search(TAG_NAME) === -1) {
+                        // debug('skipping')
+                        return
+                    }
                     const codeToInsert = `var ${SOURCE_CODE_VARIABLE} = ${JSON.stringify(
                         code,
                     )};`
                     // this.file.code = codeToInsert + '\n' + this.file.code
+                    debug('adding top level source code variable')
                     path.unshiftContainer(
                         'body',
-                        babel.parse(codeToInsert).program.body[0],
+                        parse(codeToInsert, {
+                            filename: state.file.opts.filename,
+                        }).program.body[0],
                     )
 
-                    // path.node.body.unshift(
-                    //     babel.parse(codeToInsert).program.body[0],
-                    // )
-                    // console.log(code)
-                    //path.node
-                    //path.parent
-                    //state.opts
-                },
-                exit(path, state) {
                     const filePath = state.file.opts.filename || ''
                     const remote = getGitConfigSync('.')?.remote
                     const gitRemote =
@@ -68,17 +68,19 @@ export const plugin = (
                             position: 'end',
                         },
                     ]
+                    debug('running babel-plugin-add-jsx-attribute')
                     const res = transformFromAstSync(
                         path.node,
                         this.file.code,
                         {
+                            filename: '',
                             ast: true,
                             plugins: [
                                 // '@babel/plugin-syntax-jsx',
                                 [
                                     addJsxAttrs,
                                     {
-                                        elements: TAG_NAMES,
+                                        elements: [TAG_NAME],
                                         attributes,
                                     },
                                 ],

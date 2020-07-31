@@ -5,7 +5,7 @@
         "website"
     ],
     "scripts": {
-        "dev": "cd website && yarn dev",
+        "dev": "yarn --cwd edit-this-page tsc -w",
         "build": "yarn --cwd dokz compile"
     }
 }

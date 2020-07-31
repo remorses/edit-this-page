@@ -1,0 +1,57 @@
+{
+    "name": "edit-this-page",
+    "_": "[bump]",
+    "version": "0.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "module": "esm/index.js",
+    "types": "dist/index.d.ts",
+    "sideEffects": false,
+    "mocha": {
+        "require": "tests/init.js",
+        "spec": "tests/**.ts",
+        "timeout": 9999999999
+    },
+    "repository": {
+        "type": "git",
+        "url": "remorses/edit-this-page",
+        "directory": "edit-this-page"
+    },
+    "files": [
+        "/dist/*",
+        "/esm/*"
+    ],
+    "scripts": {
+        "compile": "tsc --incremental && tsc --module ESNext --outDir esm --incremental",
+        "build": "build-storybook -c .storybook -o public",
+        "test": "NODE_ENV=test mocha --colors --exit",
+        "dev": "yarn compile && node dist"
+    },
+    "keywords": [],
+    "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+        "@emotion/core": "^10.0.28",
+        "@types/lodash": "^4.14.149",
+        "@types/mocha": "^5.2.7",
+        "@types/node": "^12.0.7",
+        "@types/react": "^16.9.25",
+        "dotenv": "^8.2.0",
+        "mocha": "^6.1.4",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "sucrase": "^3.12.1",
+        "typescript": "^3.8.3"
+    },
+    "peerDependencies": {
+        "react": "*",
+        "react-dom": "*"
+    },
+    "dependencies": {
+        "@babel/core": "^7.9.0",
+        "@babel/traverse": "^7.9.0",
+        "@babel/types": "^7.9.0",
+        "@svgr/babel-plugin-add-jsx-attribute": "^5.4.0",
+        "get-git-config": "^0.0.2"
+    }
+}

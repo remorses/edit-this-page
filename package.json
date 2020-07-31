@@ -1,0 +1,11 @@
+{
+    "private": true,
+    "workspaces": [
+        "edit-this-page",
+        "website"
+    ],
+    "scripts": {
+        "dev": "cd website && yarn dev",
+        "build": "yarn --cwd dokz compile"
+    }
+}

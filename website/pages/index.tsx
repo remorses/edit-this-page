@@ -2,7 +2,7 @@
 
 import { css, jsx } from '@emotion/core'
 import { Wrapper } from 'dokz/dist'
-import { EditThisPageButton } from 'edit-this-page/dist'
+import { EditThisPageButton } from 'edit-this-page/src'
 
 jsx
 

@@ -39,7 +39,7 @@ const handler: NextApiHandler = async (req, res) => {
     const prRes = await createPr(octokit, {
         githubUrl,
         branch: branchRef,
-        prCreator: await getMyLogin(octokit),
+        prCreator: await getMyUsername(octokit),
         title: `Changes for '${filePath}'`,
         // TODO get the current branch or use babel config
         baseBranch,
@@ -52,7 +52,7 @@ const handler: NextApiHandler = async (req, res) => {
 }
 
 // TODO memoize this function
-export async function getMyLogin(octokit: Octokit) {
+export async function getMyUsername(octokit: Octokit) {
     const { data } = await octokit.users.getAuthenticated()
     return data.login
 }

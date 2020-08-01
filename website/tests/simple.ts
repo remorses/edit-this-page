@@ -2,7 +2,7 @@ import {
     createForkAndBranch,
     parseGithubUrl,
     createPr,
-    getMyLogin,
+    getMyUsername,
     commitFiles,
 } from '../pages/api/submit'
 import assert from 'assert'

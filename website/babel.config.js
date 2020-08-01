@@ -19,5 +19,5 @@ const inspect = (babel) => {
 
 module.exports = {
     presets: ['next/babel'],
-    plugins: [babelPlugin],
+    plugins: [[babelPlugin, { editableFiles: 'pages/**/*.tsx' }]],
 }

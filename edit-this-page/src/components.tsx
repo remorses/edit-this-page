@@ -1,29 +1,38 @@
 /** @jsx jsx */
 import Modal from 'react-overlays/Modal'
 
-import React, { useState, ReactNode, Fragment } from 'react'
+import React, { useState, ReactNode, Fragment, useEffect } from 'react'
 import { jsx, css, Global } from '@emotion/core'
+import pick from 'lodash/pick'
 
 import emotionNormalize from 'emotion-normalize'
+import { InjectedParams } from './babel-plugin'
 
 jsx
 
 // we use some pseudo random coords so nested modals
 // don't sit right on top of each other.
 
-export type HiddenProps = {
-    filePath: string
-    gitRemote: string
-    sourceCode: string
-}
-
 export type EditThisPageButtonProps = { children?: ReactNode }
+
+function getParams(): InjectedParams {
+    if (typeof window === undefined) {
+        return {}
+    } else {
+        return pick(window as {}, [
+            'editThisPageFilePath',
+            'editThisPageGitRemote',
+            'editThisPageSourceCode',
+        ])
+    }
+}
 
 export function EditThisPageButton(props: EditThisPageButtonProps) {
     console.log(props)
-
-    let extendedProps: HiddenProps = props as any
-
+    const [params, setParams] = useState<InjectedParams>({})
+    useEffect(() => {
+        setParams(getParams())
+    }, [])
     const [show, setShow] = useState(false)
 
     const renderBackdrop = (props) => (
@@ -74,7 +83,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                 >
                     <div>
                         <h4 id='modal-label'>Text in a modal</h4>
-                        <pre>{extendedProps.sourceCode}</pre>
+                        <pre>{params?.editThisPageSourceCode}</pre>
                         {/* <EditOverly /> */}
                     </div>
                 </Modal>

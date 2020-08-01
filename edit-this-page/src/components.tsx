@@ -65,10 +65,13 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     top: 40px;
                     left: 20px;
                     right: 20px;
+                    bottom: 20px;
                     z-index: 1040;
                     background-color: white;
                     min-height: 200px;
+                    max-height: 100%;
                     border-radius: 6px;
+                    overflow-y: auto;
                     /* overflow: hidden; */
                     box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
                 `}
@@ -83,7 +86,9 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     spacing='40px'
                     position='relative'
                 >
-                    <Code value={code} onChange={setCode} />
+                    <Stack overflowX='auto' bg='#F7FAFC' borderRadius='8px'>
+                        <Code value={code} onChange={setCode} />
+                    </Stack>
                     <Stack direction='row'>
                         {/* <Box flex='1' /> */}
                         <Box

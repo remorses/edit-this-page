@@ -35,10 +35,14 @@ export const babelPlugin = (
                             `cannot find the .git directory, edit-this-page plugin only works with git repos`,
                         )
                     }
-                    const relativePath = path.relative(root, filePath)
+                    const relativePathToRepo = path.relative(root, filePath)
+                    const relativePathToBabel = path.relative(
+                        process.cwd(),
+                        filePath,
+                    )
                     // console.log({ relativePath })
-                    if (!minimatch(relativePath, editableFiles)) {
-                        debug('skipping')
+                    if (!minimatch(relativePathToBabel, editableFiles)) {
+                        // debug('skipping')
                         return
                     }
 
@@ -49,7 +53,7 @@ export const babelPlugin = (
                         ''
                     // TODO add additional attributes to the button props taken from a config file, like target branch ...
                     const toInject: InjectedParams = {
-                        editThisPageFilePath: relativePath,
+                        editThisPageFilePath: relativePathToRepo,
                         editThisPageGitRemote: gitRemote,
                         editThisPageSourceCode: sourceCode,
                     }

@@ -3,6 +3,7 @@ import { css, jsx } from '@emotion/core'
 import { Box, Stack } from 'layout-kit-react'
 import pick from 'lodash/pick'
 import { Fragment, ReactNode, useEffect, useState, useCallback } from 'react'
+import { ThemeProvider } from '@chakra-ui/core'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
 import { Code } from './Code'
@@ -48,7 +49,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
     }, [code, params])
 
     return (
-        <Fragment>
+        <ThemeProvider>
             {/* <Global styles={emotionNormalize} /> */}
 
             <Box
@@ -66,6 +67,8 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     left: 20px;
                     right: 20px;
                     bottom: 20px;
+                    /* padding-bottom: 20px; */
+                    /* bottom: 20px; */
                     z-index: 1040;
                     background-color: white;
                     min-height: 200px;
@@ -82,11 +85,16 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
             >
                 <Stack
                     align='stretch'
-                    p='20px'
+                    // p='20px'
                     spacing='40px'
                     position='relative'
                 >
-                    <Stack overflowX='auto' bg='#F7FAFC' borderRadius='8px'>
+                    <Stack
+                        // shadow='sm'
+                        overflowX='auto'
+                        bg='gray.50'
+                        borderRadius='8px'
+                    >
                         <Code value={code} onChange={setCode} />
                     </Stack>
                     <Stack direction='row'>
@@ -110,7 +118,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     {/* <EditOverly /> */}
                 </Stack>
             </Modal>
-        </Fragment>
+        </ThemeProvider>
     )
 }
 

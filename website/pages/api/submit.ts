@@ -84,7 +84,7 @@ export async function createForkAndBranch(
 
 export async function createPr(
     octokit: Octokit,
-    { githubUrl, title, body = '', branchRef, prCreator = '', baseBranch },
+    { githubUrl, title, body = '', branch, prCreator = '', baseBranch },
 ) {
     const { owner, repo } = parseGithubUrl(githubUrl)
 
@@ -95,7 +95,7 @@ export async function createPr(
         /**
          * The name of the branch where your changes are implemented. For cross-repository pull requests in the same network, namespace `head` with a user like this: `username:branch`.
          */
-        head: prCreator ? `${prCreator}:${branchRef}` : branchRef,
+        head: prCreator ? `${prCreator}:${branch}` : branch,
         /**
          * The name of the branch you want the changes pulled into. This should be an existing branch on the current repository. You cannot submit a pull request to one repository that requests a merge to a base of another repository.
          */
@@ -128,11 +128,11 @@ export async function commitFiles(
     {
         githubUrl,
         tree,
-        fromBranch = undefined,
+        branch,
         message,
     }: {
         githubUrl
-        fromBranch
+        branch
         tree: { path; mode: '100644'; content }[] // mode '100644',
         message
     },
@@ -142,7 +142,7 @@ export async function commitFiles(
     let response = await octokit.repos.listCommits({
         owner,
         repo,
-        sha: fromBranch,
+        sha: branch,
         per_page: 1,
     })
     const latestCommitSha = response.data[0].sha
@@ -178,7 +178,7 @@ export async function commitFiles(
         repo,
         force: true,
         sha: newCommitSha,
-        ref: `heads/master`, // sometimes is refs/
+        ref: `heads/${branch}`, // sometimes is refs/
     })
     console.log(`new commit sha: ${newCommitSha}`)
     console.log(

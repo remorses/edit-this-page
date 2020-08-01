@@ -29,8 +29,8 @@ describe('github', () => {
     it('commitFiles', async () => {
         let commitRes = await commitFiles(octokit, {
             githubUrl,
-            message: 'test',
-            fromBranch: 'master',
+            message: 'another test',
+            branch: 'master',
             tree: [
                 {
                     path: 'example.js',
@@ -47,30 +47,34 @@ describe('github', () => {
             githubUrl,
             newBranchName,
         })
-        console.log(forkRes.branchRef)
+        // console.log(forkRes.branchRef)
         try {
             let commitRes = await commitFiles(octokit, {
                 githubUrl,
-                message: 'test',
-                fromBranch: 'master',
+                message: 'should be on pr',
+                branch: newBranchName,
                 tree: [
-                    { path: 'example.js', content: '// pushed for testing' },
+                    {
+                        path: 'another.js',
+                        mode: '100644',
+                        content: '// pushed for testing ' + uuid.v4(),
+                    },
                 ],
             })
-            console.log(commitRes)
             const prRes = await createPr(octokit, {
                 githubUrl,
-                branchRef: newBranchName,
+                branch: newBranchName,
                 // prCreator: await getMyLogin(octokit),
-                title: `Testing pr creation`,
+                title: `Still Testing pr creation`,
                 baseBranch: 'master',
             })
             console.log(prRes)
         } finally {
-            // await octokit.git.deleteRef({
-            //     ...parseGithubUrl(githubUrl),
-            //     ref: `heads/${newBranchName}`,
-            // })
+            // depleting the branch also deletes the pr
+            await octokit.git.deleteRef({
+                ...parseGithubUrl(githubUrl),
+                ref: `heads/${newBranchName}`,
+            })
         }
     })
 })

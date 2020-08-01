@@ -104,7 +104,10 @@ export async function createPr(
         /**
          * The name of the branch where your changes are implemented. For cross-repository pull requests in the same network, namespace `head` with a user like this: `username:branch`.
          */
-        head: prCreator ? `${prCreator}:${branch}` : branch,
+        head:
+            prCreator && prCreator !== owner
+                ? `${prCreator}:${branch}`
+                : branch,
         /**
          * The name of the branch you want the changes pulled into. This should be an existing branch on the current repository. You cannot submit a pull request to one repository that requests a merge to a base of another repository.
          */

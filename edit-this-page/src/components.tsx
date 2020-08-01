@@ -7,6 +7,7 @@ import pick from 'lodash/pick'
 
 import emotionNormalize from 'emotion-normalize'
 import { InjectedParams } from './babel-plugin'
+import { Code } from './Code'
 
 jsx
 
@@ -15,19 +16,6 @@ jsx
 
 export type EditThisPageButtonProps = { children?: ReactNode }
 
-function getParams(): InjectedParams {
-    if (typeof window === undefined) {
-        return {}
-    } else {
-        const keys: Array<keyof InjectedParams> = [
-            'editThisPageFilePath',
-            'editThisPageGitRemote',
-            'editThisPageSourceCode',
-        ]
-        return pick(window as {}, keys)
-    }
-}
-
 export function EditThisPageButton(props: EditThisPageButtonProps) {
     console.log(props)
     const [params, setParams] = useState<InjectedParams>({})
@@ -35,6 +23,10 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
         setParams(getParams())
     }, [])
     const [show, setShow] = useState(false)
+    const [code, setCode] = useState(params?.editThisPageSourceCode || '')
+    useEffect(() => {
+        setCode(params?.editThisPageSourceCode)
+    }, [params])
 
     const renderBackdrop = (props) => (
         <div
@@ -84,11 +76,24 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                 >
                     <div>
                         <h4 id='modal-label'>Text in a modal</h4>
-                        <pre>{params?.editThisPageSourceCode}</pre>
+                        <Code value={code} onChange={setCode} />
                         {/* <EditOverly /> */}
                     </div>
                 </Modal>
             </div>
         </Fragment>
     )
+}
+
+function getParams(): InjectedParams {
+    if (typeof window === undefined) {
+        return {}
+    } else {
+        const keys: Array<keyof InjectedParams> = [
+            'editThisPageFilePath',
+            'editThisPageGitRemote',
+            'editThisPageSourceCode',
+        ]
+        return pick(window as {}, keys)
+    }
 }

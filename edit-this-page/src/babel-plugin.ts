@@ -65,7 +65,7 @@ export const babelPlugin = (
                     const parsed = babel.parse(codeToInsert, {
                         filename: '',
                     })
-                    console.log(codeToInsert)
+                    // console.log(codeToInsert)
                     p.unshiftContainer('body', parsed.program.body[0])
                 },
             },

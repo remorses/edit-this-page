@@ -1,11 +1,10 @@
-import { Box, useClipboard, useColorMode } from '@chakra-ui/core'
-
-import React, { useEffect, Component, Fragment, useCallback } from 'react'
-import Editor from 'react-simple-code-editor'
-import Highlight, { Prism, defaultProps } from 'prism-react-renderer'
-
-import { FiCheck, FiCopy } from 'react-icons/fi'
+import { Box } from 'layout-kit-react'
+import Highlight, { defaultProps } from 'prism-react-renderer'
 import prismTheme from 'prism-react-renderer/themes/nightOwlLight'
+import React, { useCallback } from 'react'
+import Editor from 'react-simple-code-editor'
+
+
 
 export const Code = ({
     value = '',

@@ -1,11 +1,9 @@
 /** @jsx jsx */
-import Modal from 'react-overlays/Modal'
-
-import React, { useState, ReactNode, Fragment, useEffect } from 'react'
-import { jsx, css, Global } from '@emotion/core'
+import { css, jsx } from '@emotion/core'
+import { Box, Stack } from 'layout-kit-react'
 import pick from 'lodash/pick'
-
-import emotionNormalize from 'emotion-normalize'
+import { Fragment, ReactNode, useEffect, useState } from 'react'
+import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
 import { Code } from './Code'
 
@@ -46,41 +44,57 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
     return (
         <Fragment>
             {/* <Global styles={emotionNormalize} /> */}
-            <div className='modal-example'>
-                <button
-                    type='button'
-                    className='btn btn-primary mb-4'
-                    onClick={() => setShow(true)}
-                >
-                    Open Modal
-                </button>
-                <p>Click to get the full Modal experience!</p>
 
-                <Modal
-                    css={css`
-                        position: fixed;
-                        height: auto;
-                        top: 40px;
-                        left: 20px;
-                        right: 20px;
-                        z-index: 1040;
-                        border: 1px solid #e5e5e5;
-                        background-color: white;
-                        min-height: 200px;
-                        /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); */
-                    `}
-                    show={show}
-                    onHide={() => setShow(false)}
-                    renderBackdrop={renderBackdrop}
-                    aria-labelledby='modal-label'
+            <Box
+                as='button'
+                className='btn btn-primary mb-4'
+                onClick={() => setShow(true)}
+            >
+                Open Modal
+            </Box>
+            <Modal
+                css={css`
+                    position: fixed;
+                    height: auto;
+                    top: 40px;
+                    left: 20px;
+                    right: 20px;
+                    z-index: 1040;
+                    background-color: white;
+                    min-height: 200px;
+                    border-radius: 6px;
+                    /* overflow: hidden; */
+                    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
+                `}
+                show={show}
+                onHide={() => setShow(false)}
+                renderBackdrop={renderBackdrop}
+                aria-labelledby='modal-label'
+            >
+                <Stack
+                    align='stretch'
+                    p='20px'
+                    spacing='40px'
+                    position='relative'
                 >
-                    <div>
-                        <h4 id='modal-label'>Text in a modal</h4>
-                        <Code value={code} onChange={setCode} />
-                        {/* <EditOverly /> */}
-                    </div>
-                </Modal>
-            </div>
+                    <Code value={code} onChange={setCode} />
+                    <Stack direction='row'>
+                        {/* <Box flex='1' /> */}
+                        <Box
+                            fontWeight='500'
+                            px='10px'
+                            py='8px'
+                            bg='#eee'
+                            display='inline-block'
+                            borderRadius='6px'
+                            as='button'
+                        >
+                            Open Pull Request
+                        </Box>
+                    </Stack>
+                    {/* <EditOverly /> */}
+                </Stack>
+            </Modal>
         </Fragment>
     )
 }

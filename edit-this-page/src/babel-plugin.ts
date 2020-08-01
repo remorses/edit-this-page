@@ -1,5 +1,6 @@
 import { transformFromAstSync, parse } from '@babel/core'
 import { Visitor } from '@babel/traverse'
+import jsxSyntaxPlugin from 'babel-plugin-syntax-jsx'
 import minimatch from 'minimatch'
 import path from 'path'
 import * as BabelTypes from '@babel/types'
@@ -22,10 +23,11 @@ export type InjectedParams = {
 export const babelPlugin = (
     babel: { types: typeof BabelTypes; template; parse; transformFromAstSync },
     { editableFiles = '' },
-): { visitor: Visitor<any> } => {
+): { visitor: Visitor<any>; inherits } => {
     const { types: t, template } = babel
 
     return {
+        inherits: jsxSyntaxPlugin,
         visitor: {
             Program: {
                 enter(p, state) {

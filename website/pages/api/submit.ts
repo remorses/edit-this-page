@@ -36,7 +36,7 @@ const handler: NextApiHandler = async (req, res) => {
         ],
     })
 
-    const prRes = await createPr(octokit, {
+    const { prUrl, ...prRes } = await createPr(octokit, {
         githubUrl,
         branch: branchRef,
         prCreator: await getMyUsername(octokit),
@@ -48,7 +48,9 @@ const handler: NextApiHandler = async (req, res) => {
     // console.log(data)
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
-    res.json({})
+    res.json({
+        url: prUrl,
+    })
 }
 
 // TODO memoize this function
@@ -97,7 +99,7 @@ export async function createPr(
     const { owner, repo } = parseGithubUrl(githubUrl)
 
     console.log(`opening pull request at '${githubUrl}'`)
-    await octokit.pulls.create({
+    const res = await octokit.pulls.create({
         owner,
         repo,
         title,
@@ -116,6 +118,10 @@ export async function createPr(
         body,
         maintainer_can_modify: true,
     })
+    return {
+        ...res,
+        prUrl: `https://github.com/${owner}/${repo}/pull/${res.data.number}`,
+    }
 }
 
 export default handler
@@ -195,6 +201,6 @@ export async function commitFiles(
     })
     // console.log(`new commit sha: ${newCommitSha}`)
     console.log(
-        `new commit available at 'https://github.com/remorses/testing-github-api/commit/${newCommitSha}'`,
+        `new commit available at 'https://github.com/${owner}/${repo}/commit/${newCommitSha}'`,
     )
 }

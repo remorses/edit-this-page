@@ -5,10 +5,7 @@ import path from 'path'
 import * as BabelTypes from '@babel/types'
 import { getGitConfigSync } from 'get-git-config'
 
-export const SOURCE_CODE_VARIABLE = 'SOURCE_CODE_FOR_EDIT_BUTTON'
-export const TAG_NAME = 'EditThisPageButton'
-
-const ALREADY_CHECKED = '_ALREADY_CHECKED_'
+export const PREFIX = 'editThisPage'
 
 export type PluginOptions = {
     values: { value: string; newValue: string; literal?: boolean }[]
@@ -25,8 +22,6 @@ export type InjectedParams = {
     editThisPageGitRemote?: string
     editThisPageSourceCode?: string
 }
-
-export const PREFIX = 'editThisPage'
 
 export const babelPlugin = (
     babel: { types: typeof BabelTypes; template; parse; transformFromAstSync },
@@ -72,45 +67,8 @@ export const babelPlugin = (
                     })
                     console.log(codeToInsert)
                     p.unshiftContainer('body', parsed.program.body[0])
-                    // TODO running this plugin invalidates the css prop
-                    // const res = babel.transformFromAstSync(
-                    //     path.node,
-                    //     this.file.code,
-                    //     {
-                    //         filename: state.file.opts.filename,
-                    //         ast: true,
-                    //         plugins: [
-                    //             // '@babel/plugin-syntax-jsx',
-                    //             [
-                    //                 addJsxAttrs,
-                    //                 {
-                    //                     elements: [TAG_NAME],
-                    //                     attributes,
-                    //                 },
-                    //             ],
-                    //         ],
-                    //     },
-                    // )
-                    // // console.log(res.ast)
-                    // path.node.body = res.ast.program.body
                 },
             },
-
-            // JSXElement(path, stats) {
-            //     const tagNames = TAG_NAMES
-            //     const name: any = path.node.openingElement.name
-            //     if (!tagNames.includes(name?.name)) {
-            //         return
-            //     }
-
-            //     path.node.openingElement.attributes.forEach(
-            //         (attr: JSXAttribute) => {
-            //             console.log(attr.name.name)
-            //             console.log(attr.value)
-            //             attr
-            //         },
-            //     )
-            // },
         },
     }
 }

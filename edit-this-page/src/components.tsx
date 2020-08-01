@@ -6,6 +6,7 @@ import { Fragment, ReactNode, useEffect, useState, useCallback } from 'react'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
 import { Code } from './Code'
+import { submit } from './submit'
 import { API_URL } from './constants'
 
 jsx
@@ -26,19 +27,11 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
         setCode(params?.editThisPageSourceCode)
     }, [params])
 
-    const submit = useCallback(() => {
-        const data = {
+    const onSubmit = useCallback(() => {
+        return submit({
             githubUrl: params.editThisPageGitRemote,
             filePath: params.editThisPageFilePath,
             changedCode: code,
-        }
-        return alert(JSON.stringify(data, null, 4))
-        return fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: JSON.stringify(data),
         })
     }, [code, params])
 
@@ -89,7 +82,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                             display='inline-block'
                             borderRadius='6px'
                             as='button'
-                            onClick={submit}
+                            onClick={onSubmit}
                         >
                             Open Pull Request
                         </Box>

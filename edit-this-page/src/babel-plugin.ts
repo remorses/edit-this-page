@@ -22,7 +22,7 @@ export type InjectedParams = {
 
 export const babelPlugin = (
     babel: { types: typeof BabelTypes; template; parse; transformFromAstSync },
-    { editableFiles = '' },
+    { editableFiles = '**' },
 ): { visitor: Visitor<any>; inherits } => {
     const { types: t, template } = babel
 

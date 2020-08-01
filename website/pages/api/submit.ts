@@ -28,27 +28,25 @@ const handler: NextApiHandler = async (req, res) => {
         newBranchName,
     })
 
-    await octokit.pulls.create({
-        owner,
-        repo,
+    const prRes = await createPr(octokit, {
+        githubUrl,
+        branchRef: forkRes.branchRef,
+        prCreator: await getMyLogin(octokit),
         title: `Changes for '${filePath}'`,
-        /**
-         * The name of the branch where your changes are implemented. For cross-repository pull requests in the same network, namespace `head` with a user like this: `username:branch`.
-         */
-        head: forkRes.branchRef,
-        /**
-         * The name of the branch you want the changes pulled into. This should be an existing branch on the current repository. You cannot submit a pull request to one repository that requests a merge to a base of another repository.
-         */
         // TODO get the current branch or use babel config
-        base: 'master',
-
-        body: '',
-        maintainer_can_modify: true,
+        baseBranch: 'master',
     })
+
     // console.log(data)
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
     res.json({})
+}
+
+// TODO memoize this function
+export async function getMyLogin(octokit: Octokit) {
+    const { data } = await octokit.users.getAuthenticated()
+    return data.login
 }
 
 export async function createForkAndBranch(
@@ -84,6 +82,30 @@ export async function createForkAndBranch(
     return { ...forkRes.data, branchRef: branchRes.data.ref }
 }
 
+export async function createPr(
+    octokit: Octokit,
+    { githubUrl, title, body = '', branchRef, prCreator = '', baseBranch },
+) {
+    const { owner, repo } = parseGithubUrl(githubUrl)
+
+    await octokit.pulls.create({
+        owner,
+        repo,
+        title,
+        /**
+         * The name of the branch where your changes are implemented. For cross-repository pull requests in the same network, namespace `head` with a user like this: `username:branch`.
+         */
+        head: prCreator ? `${prCreator}:${branchRef}` : branchRef,
+        /**
+         * The name of the branch you want the changes pulled into. This should be an existing branch on the current repository. You cannot submit a pull request to one repository that requests a merge to a base of another repository.
+         */
+
+        base: baseBranch,
+        body,
+        maintainer_can_modify: true,
+    })
+}
+
 export default handler
 
 export function parseGithubUrl(githubUrl): { repo; owner } {
@@ -101,21 +123,21 @@ export function parseGithubUrl(githubUrl): { repo; owner } {
     return { repo, owner }
 }
 
-async function commitFiles({
-    owner,
-    repo,
-    tree,
-    fromBranch = undefined,
-    message,
-    octokit,
-}: {
-    repo
-    owner
-    fromBranch
-    tree: { path; mode; content }[] // mode '100644',
-    message
-    octokit: Octokit
-}) {
+export async function commitFiles(
+    octokit: Octokit,
+    {
+        githubUrl,
+        tree,
+        fromBranch = undefined,
+        message,
+    }: {
+        githubUrl
+        fromBranch
+        tree: { path; mode: '100644'; content }[] // mode '100644',
+        message
+    },
+) {
+    const { owner, repo } = parseGithubUrl(githubUrl)
     console.log('getting latest commit sha & treeSha')
     let response = await octokit.repos.listCommits({
         owner,
@@ -132,10 +154,9 @@ async function commitFiles({
         owner,
         repo,
         base_tree: treeSha,
-
         tree,
     })
-    const newTreeSha = treeResponse.sha
+    const newTreeSha = treeResponse.data.sha
 
     console.log(`new tree sha: ${newTreeSha}`)
 
@@ -151,7 +172,7 @@ async function commitFiles({
         //     email: 'apu@martynus.net',
         // },
     })
-    const newCommitSha = commitRes.sha
+    const newCommitSha = commitRes.data.sha
     await octokit.git.updateRef({
         owner,
         repo,
@@ -160,5 +181,7 @@ async function commitFiles({
         ref: `heads/master`, // sometimes is refs/
     })
     console.log(`new commit sha: ${newCommitSha}`)
-    console.log(`new commit at ${commitRes.url}`)
+    console.log(
+        `new commit at 'https://github.com/remorses/testing-github-api/commit/${newCommitSha}'`,
+    )
 }

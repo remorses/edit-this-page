@@ -19,11 +19,12 @@ function getParams(): InjectedParams {
     if (typeof window === undefined) {
         return {}
     } else {
-        return pick(window as {}, [
+        const keys: Array<keyof InjectedParams> = [
             'editThisPageFilePath',
             'editThisPageGitRemote',
             'editThisPageSourceCode',
-        ])
+        ]
+        return pick(window as {}, keys)
     }
 }
 

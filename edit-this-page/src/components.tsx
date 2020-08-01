@@ -6,7 +6,7 @@ import { Fragment, ReactNode, useEffect, useState, useCallback } from 'react'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
 import { Code } from './Code'
-import { submit } from './submit'
+import { submitCode } from './submit'
 import { API_URL } from './constants'
 
 jsx
@@ -23,17 +23,28 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
     }, [])
     const [show, setShow] = useState(false)
     const [code, setCode] = useState(params?.editThisPageSourceCode || '')
+    const [submitState, setSubmitState] = useState({
+        loading: false,
+        error: null,
+    })
+    const [prUrl, setPrUrl] = useState('')
     useEffect(() => {
         setCode(params?.editThisPageSourceCode)
     }, [params])
 
     const onSubmit = useCallback(() => {
-        return submit({
+        setSubmitState((x) => ({ ...x, loading: true }))
+        return submitCode({
             githubUrl: params.editThisPageGitRemote,
             filePath: params.editThisPageFilePath,
             changedCode: code,
             baseBranch: params.editThisPageBranch,
         })
+            .then((r) => {
+                setSubmitState((x) => ({ ...x, loading: false }))
+                setPrUrl(r?.url || '')
+            })
+            .catch((error) => setSubmitState((x) => ({ ...x, error })))
     }, [code, params])
 
     return (
@@ -85,9 +96,12 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                             as='button'
                             onClick={onSubmit}
                         >
-                            Open Pull Request
+                            {submitState.loading
+                                ? 'Loading'
+                                : 'Open Pull Request'}
                         </Box>
                     </Stack>
+                    <Box>{prUrl}</Box>
                     {/* <EditOverly /> */}
                 </Stack>
             </Modal>

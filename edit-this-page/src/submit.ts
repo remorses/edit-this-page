@@ -7,13 +7,17 @@ export type SubmitArgs = {
     changedCode: string
 }
 
-export const submit = async (data: SubmitArgs) => {
+export const submitCode = async (data: SubmitArgs) => {
     // return alert(JSON.stringify(data, null, 4))
-    return fetch(API_URL, {
+    const r = await fetch(API_URL, {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
         },
         body: JSON.stringify(data),
     })
+    if (!r.ok) {
+        throw new Error(r.statusText)
+    }
+    return await r.json()
 }

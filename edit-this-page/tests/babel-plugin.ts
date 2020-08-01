@@ -1,8 +1,6 @@
 import { transform } from '@babel/core'
-import {
-    babelPlugin,
-    TAG_NAME
-} from '../src/babel-plugin'
+import { babelPlugin, getCurrentBranch } from '../src/babel-plugin'
+import { assert } from 'console'
 
 const OPTIONS = {
     plugins: ['@babel/plugin-syntax-jsx', [babelPlugin, {}]],
@@ -13,11 +11,15 @@ describe('babel plugin', () => {
 
     describe('source code', () => {
         it('should extract source code', () => {
-            const res = transform(
-                `const x = <${TAG_NAME} id="Hello World!"/>`,
-                OPTIONS,
-            )
+            const res = transform(`const x = <div id="Hello World!"/>`, OPTIONS)
             console.log(res.code)
+        })
+    })
+    describe('branch', () => {
+        it('works', () => {
+            const res = getCurrentBranch()
+            assert(res)
+            assert(!res.includes('\n'))
         })
     })
 })

@@ -3,6 +3,7 @@ import { API_URL } from './constants'
 export type SubmitArgs = {
     githubUrl: string
     filePath: string
+    baseBranch: string
     changedCode: string
 }
 

@@ -7,34 +7,42 @@ import * as uuid from 'uuid'
 import { pretty } from '../../support'
 
 const handler: NextApiHandler = async (req, res) => {
-    const { filePath, changedCode, githubUrl }: SubmitArgs = req.body
-    const branchFrom = 'master' // TODO branchfrom
-    console.log(`opening pull request at '${githubUrl}' for file '${filePath}'`)
+    const {
+        filePath,
+        changedCode,
+        githubUrl,
+        baseBranch,
+    }: SubmitArgs = req.body
+
     const octokit = new Octokit({ auth: GITHUB_TOKEN })
-    // octokit.git.createBlob({
-    //     owner,
-    //     repo,
 
-    // })
-    const { owner, repo } = parseGithubUrl(githubUrl)
-
-    // forkRes.
-
-    // create branch
     const newBranchName = uuid.v4()
 
-    const forkRes = await createForkAndBranch(octokit, {
+    const { branchRef, ...forkRes } = await createForkAndBranch(octokit, {
         githubUrl,
         newBranchName,
     })
 
+    let commitRes = await commitFiles(octokit, {
+        githubUrl,
+        message: `Edited '${filePath}' via 'edit-this-page'`,
+        branch: newBranchName,
+        tree: [
+            {
+                path: filePath,
+                mode: '100644',
+                content: changedCode,
+            },
+        ],
+    })
+
     const prRes = await createPr(octokit, {
         githubUrl,
-        branchRef: forkRes.branchRef,
+        branch: branchRef,
         prCreator: await getMyLogin(octokit),
         title: `Changes for '${filePath}'`,
         // TODO get the current branch or use babel config
-        baseBranch: 'master',
+        baseBranch,
     })
 
     // console.log(data)
@@ -88,6 +96,7 @@ export async function createPr(
 ) {
     const { owner, repo } = parseGithubUrl(githubUrl)
 
+    console.log(`opening pull request at '${githubUrl}'`)
     await octokit.pulls.create({
         owner,
         repo,
@@ -147,7 +156,7 @@ export async function commitFiles(
     })
     const latestCommitSha = response.data[0].sha
     const treeSha = response.data[0].commit.tree.sha
-    console.log(`commit sha: ${latestCommitSha}, tree sha: ${treeSha}`)
+    // console.log(`commit sha: ${latestCommitSha}, tree sha: ${treeSha}`)
 
     console.log('creating tree')
     const treeResponse = await octokit.git.createTree({
@@ -158,7 +167,7 @@ export async function commitFiles(
     })
     const newTreeSha = treeResponse.data.sha
 
-    console.log(`new tree sha: ${newTreeSha}`)
+    // console.log(`new tree sha: ${newTreeSha}`)
 
     console.log('creating commit')
     const commitRes = await octokit.git.createCommit({
@@ -173,6 +182,7 @@ export async function commitFiles(
         // },
     })
     const newCommitSha = commitRes.data.sha
+    console.log('updating commit ref')
     await octokit.git.updateRef({
         owner,
         repo,
@@ -180,8 +190,8 @@ export async function commitFiles(
         sha: newCommitSha,
         ref: `heads/${branch}`, // sometimes is refs/
     })
-    console.log(`new commit sha: ${newCommitSha}`)
+    // console.log(`new commit sha: ${newCommitSha}`)
     console.log(
-        `new commit at 'https://github.com/remorses/testing-github-api/commit/${newCommitSha}'`,
+        `new commit available at 'https://github.com/remorses/testing-github-api/commit/${newCommitSha}'`,
     )
 }

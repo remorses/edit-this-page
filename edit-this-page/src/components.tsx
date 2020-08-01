@@ -32,6 +32,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
             githubUrl: params.editThisPageGitRemote,
             filePath: params.editThisPageFilePath,
             changedCode: code,
+            baseBranch: params.editThisPageBranch,
         })
     }, [code, params])
 
@@ -117,6 +118,7 @@ function getParams(): InjectedParams {
         const keys: Array<keyof InjectedParams> = [
             'editThisPageFilePath',
             'editThisPageGitRemote',
+            'editThisPageBranch',
             'editThisPageSourceCode',
         ]
         return pick(window as {}, keys)

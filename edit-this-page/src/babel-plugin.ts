@@ -4,6 +4,7 @@ import minimatch from 'minimatch'
 import path from 'path'
 import * as BabelTypes from '@babel/types'
 import { getGitConfigSync, getRepoRoot } from 'get-git-config'
+import { execSync } from 'child_process'
 
 export type PluginOptions = {
     values: { value: string; newValue: string; literal?: boolean }[]
@@ -13,6 +14,7 @@ const debug = console.log
 
 export type InjectedParams = {
     editThisPageFilePath?: string
+    editThisPageBranch?: string
     editThisPageGitRemote?: string
     editThisPageSourceCode?: string
 }
@@ -51,11 +53,13 @@ export const babelPlugin = (
                         remote?.origin?.url ||
                         remote?.[Object.keys(remote)[0]]?.url ||
                         ''
+                    const branch = getCurrentBranch()
                     // TODO add additional attributes to the button props taken from a config file, like target branch ...
                     const toInject: InjectedParams = {
                         editThisPageFilePath: relativePathToRepo,
                         editThisPageGitRemote: gitRemote,
                         editThisPageSourceCode: sourceCode,
+                        editThisPageBranch: branch,
                     }
 
                     const codeToInsert = `
@@ -76,4 +80,9 @@ export const babelPlugin = (
             },
         },
     }
+}
+
+export function getCurrentBranch() {
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', {})
+    return branch.toString().trim()
 }

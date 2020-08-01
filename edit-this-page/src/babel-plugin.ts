@@ -3,19 +3,13 @@ import { Visitor } from '@babel/traverse'
 import minimatch from 'minimatch'
 import path from 'path'
 import * as BabelTypes from '@babel/types'
-import { getGitConfigSync } from 'get-git-config'
-
-export const PREFIX = 'editThisPage'
+import { getGitConfigSync, getRepoRoot } from 'get-git-config'
 
 export type PluginOptions = {
     values: { value: string; newValue: string; literal?: boolean }[]
 }
 
 const debug = console.log
-
-function getBasePath() {
-    return process.cwd()
-}
 
 export type InjectedParams = {
     editThisPageFilePath?: string
@@ -35,7 +29,14 @@ export const babelPlugin = (
                 enter(p, state) {
                     const sourceCode: string = state.file.code
                     const filePath = state.file.opts.filename || ''
-                    const relativePath = path.relative(getBasePath(), filePath)
+                    const root = getRepoRoot()
+                    if (!root) {
+                        throw new Error(
+                            `cannot find the .git directory, edit-this-page plugin only works with git repos`,
+                        )
+                    }
+                    const relativePath = path.relative(root, filePath)
+                    // console.log({ relativePath })
                     if (!minimatch(relativePath, editableFiles)) {
                         debug('skipping')
                         return
@@ -48,7 +49,7 @@ export const babelPlugin = (
                         ''
                     // TODO add additional attributes to the button props taken from a config file, like target branch ...
                     const toInject: InjectedParams = {
-                        editThisPageFilePath: filePath,
+                        editThisPageFilePath: relativePath,
                         editThisPageGitRemote: gitRemote,
                         editThisPageSourceCode: sourceCode,
                     }

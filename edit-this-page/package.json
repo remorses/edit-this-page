@@ -52,7 +52,7 @@
         "@babel/traverse": "^7.11.0",
         "@babel/types": "^7.11.0",
         "emotion-normalize": "^10.1.0",
-        "get-git-config": "^0.0.2",
+        "get-git-config": "^0.0.4",
         "layout-kit-react": "^0.1.8",
         "minimatch": "^3.0.4",
         "react-overlays": "^4.1.0"

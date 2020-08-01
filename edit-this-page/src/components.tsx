@@ -2,10 +2,11 @@
 import { css, jsx } from '@emotion/core'
 import { Box, Stack } from 'layout-kit-react'
 import pick from 'lodash/pick'
-import { Fragment, ReactNode, useEffect, useState } from 'react'
+import { Fragment, ReactNode, useEffect, useState, useCallback } from 'react'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
 import { Code } from './Code'
+import { API_URL } from './constants'
 
 jsx
 
@@ -15,7 +16,6 @@ jsx
 export type EditThisPageButtonProps = { children?: ReactNode }
 
 export function EditThisPageButton(props: EditThisPageButtonProps) {
-    console.log(props)
     const [params, setParams] = useState<InjectedParams>({})
     useEffect(() => {
         setParams(getParams())
@@ -25,6 +25,22 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
     useEffect(() => {
         setCode(params?.editThisPageSourceCode)
     }, [params])
+
+    const submit = useCallback(() => {
+        const data = {
+            githubUrl: params.editThisPageGitRemote,
+            filePath: params.editThisPageFilePath,
+            changedCode: code,
+        }
+        return alert(JSON.stringify(data, null, 4))
+        return fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+    }, [code, params])
 
     const renderBackdrop = (props) => (
         <div
@@ -88,6 +104,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                             display='inline-block'
                             borderRadius='6px'
                             as='button'
+                            onClick={submit}
                         >
                             Open Pull Request
                         </Box>

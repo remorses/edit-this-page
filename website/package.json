@@ -4,25 +4,37 @@
     "private": true,
     "scripts": {
         "dev": "rm -rf .next && BABEL_DISABLE_CACHE=1 next dev",
+        "test": "NODE_ENV=test mocha --colors --exit",
         "build": "next build",
         "start": "next start"
+    },
+    "mocha": {
+        "require": "tests/init.js",
+        "spec": "tests/**.ts",
+        "timeout": 9999999999
     },
     "dependencies": {
         "@chakra-ui/core": "0.x",
         "@emotion/core": "^10.0.28",
         "@emotion/styled": "^10.0.27",
+        "@octokit/rest": "^18.0.3",
+        "@types/uuid": "^8.0.0",
         "dokz": "latest",
         "edit-this-page": "*",
         "next": "latest",
         "next-transpile-modules": "^4.0.2",
+        "parse-github-url": "^1.0.2",
         "react": "16.13.1",
-        "react-dom": "16.13.1"
+        "react-dom": "16.13.1",
+        "uuid": "^8.3.0"
     },
     "devDependencies": {
         "@emotion/babel-preset-css-prop": "^10.0.27",
+        "@types/mocha": "^8.0.1",
         "@types/node": "^14.0.27",
         "@types/react": "^16.9.43",
         "compose-function": "^3.0.3",
+        "mocha": "^8.1.0",
         "typescript": "^3.9.7"
     }
 }

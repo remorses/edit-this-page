@@ -42,21 +42,6 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
         })
     }, [code, params])
 
-    const renderBackdrop = (props) => (
-        <div
-            css={css`
-                position: fixed;
-                z-index: 1040;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background-color: #000;
-                opacity: 0.5;
-            `}
-            {...props}
-        />
-    )
     return (
         <Fragment>
             {/* <Global styles={emotionNormalize} /> */}
@@ -84,7 +69,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                 `}
                 show={show}
                 onHide={() => setShow(false)}
-                renderBackdrop={renderBackdrop}
+                renderBackdrop={Backdrop}
                 aria-labelledby='modal-label'
             >
                 <Stack
@@ -115,6 +100,22 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
         </Fragment>
     )
 }
+
+const Backdrop = (props) => (
+    <div
+        css={css`
+            position: fixed;
+            z-index: 1040;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #000;
+            opacity: 0.5;
+        `}
+        {...props}
+    />
+)
 
 function getParams(): InjectedParams {
     if (typeof window === undefined) {

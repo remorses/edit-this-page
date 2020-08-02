@@ -6,7 +6,7 @@
         "website"
     ],
     "scripts": {
-        "dev": "yarn --cwd edit-this-page tsc -w",
+        "dev": "yarn --cwd babel-plugin-edit-this-page tsc -w",
         "build": "yarn --cwd dokz compile"
     }
 }

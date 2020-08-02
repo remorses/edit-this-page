@@ -10,7 +10,14 @@ import {
     useCallback,
     useMemo,
 } from 'react'
-import { ThemeProvider, IconButton, Input, Button, Link } from '@chakra-ui/core'
+import {
+    ThemeProvider,
+    IconButton,
+    Input,
+    Button,
+    Link,
+    LightMode,
+} from '@chakra-ui/core'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from 'babel-plugin-edit-this-page'
 import { Code } from './Code'
@@ -67,174 +74,186 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
 
     return (
         <ThemeProvider>
-            <Box
-                as='button'
-                className='btn btn-primary mb-4'
-                onClick={() => setShow(true)}
-            >
-                Open Modal
-            </Box>
-            <Modal
-                css={css`
-                    position: fixed;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: stretch;
-                    top: 40px;
-                    left: 20px;
-                    right: 20px;
-                    bottom: 20px;
-                    /* height: 100vh; */
-                    /* padding-bottom: 20px; */
-                    /* bottom: 20px; */
-                    z-index: 1040;
-                    border-radius: 10px;
-                    /* overflow: visible; */
-                    border: none;
-                    outline: none;
-                    -webkit-box-shadow: none;
-                    -moz-box-shadow: none;
-                    box-shadow: none;
-
-                    /* overflow: hidden; */
-                `}
-                show={show}
-                onHide={() => setShow(false)}
-                renderBackdrop={Backdrop}
-                aria-labelledby='modal-label'
-            >
-                <Stack
-                    maxWidth='1000px'
-                    overflowY='auto'
-                    // minWidth='100%
-                    width={['100%', null, null, '80%']}
-                    alignSelf='center'
-                    bg='white'
-                    borderRadius='10px'
-                    align='stretch'
-                    // p='20px'
-                    spacing='20px'
-                    position='relative'
+            <LightMode>
+                <Box
+                    as='button'
+                    className='btn btn-primary mb-4'
+                    onClick={() => setShow(true)}
                 >
-                    {!prUrl && (
-                        <Fragment>
-                            <Stack flex='0 0' align='stretch'>
-                                <Stack
-                                    align='center'
-                                    direction='row'
-                                    py='10px'
-                                    px={X_PADDING}
-                                >
+                    Open Modal
+                </Box>
+                <Modal
+                    css={css`
+                        position: fixed;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: stretch;
+                        top: 40px;
+                        left: 20px;
+                        right: 20px;
+                        bottom: 20px;
+                        /* height: 100vh; */
+                        /* padding-bottom: 20px; */
+                        /* bottom: 20px; */
+                        z-index: 1040;
+                        border-radius: 10px;
+                        /* overflow: visible; */
+                        border: none;
+                        outline: none;
+                        -webkit-box-shadow: none;
+                        -moz-box-shadow: none;
+                        box-shadow: none;
+
+                        /* overflow: hidden; */
+                    `}
+                    show={show}
+                    onHide={() => setShow(false)}
+                    renderBackdrop={Backdrop}
+                    aria-labelledby='modal-label'
+                >
+                    <Stack
+                        color='gray.800'
+                        maxWidth='1000px'
+                        overflowY='auto'
+                        // minWidth='100%
+                        width={['100%', null, null, '80%']}
+                        alignSelf='center'
+                        bg='white'
+                        borderRadius='10px'
+                        align='stretch'
+                        // p='20px'
+                        spacing='20px'
+                        position='relative'
+                    >
+                        {!prUrl && (
+                            <Fragment>
+                                <Stack flex='0 0' align='stretch'>
                                     <Stack
+                                        align='center'
                                         direction='row'
-                                        fontSize='1.2em'
-                                        fontWeight='500'
-                                        spacing='8px'
+                                        py='10px'
+                                        px={X_PADDING}
                                     >
-                                        {filePathParts.slice(0, -1).map((s) => (
-                                            <Fragment>
-                                                <Box opacity={0.5}>{s}</Box>
-                                                <Box opacity={0.5}>/</Box>
-                                            </Fragment>
-                                        ))}
-                                        <Box>
-                                            {
-                                                filePathParts[
-                                                    filePathParts.length - 1
-                                                ]
-                                            }
-                                        </Box>
+                                        <Stack
+                                            direction='row'
+                                            fontSize='1.2em'
+                                            fontWeight='500'
+                                            spacing='8px'
+                                        >
+                                            {filePathParts
+                                                .slice(0, -1)
+                                                .map((s) => (
+                                                    <Fragment>
+                                                        <Box opacity={0.5}>
+                                                            {s}
+                                                        </Box>
+                                                        <Box opacity={0.5}>
+                                                            /
+                                                        </Box>
+                                                    </Fragment>
+                                                ))}
+                                            <Box>
+                                                {
+                                                    filePathParts[
+                                                        filePathParts.length - 1
+                                                    ]
+                                                }
+                                            </Box>
+                                        </Stack>
+                                        <Box flex='1' />
+                                        <IconButton
+                                            aria-label='close'
+                                            icon='close'
+                                            onClick={() => setShow(false)}
+                                        />
                                     </Stack>
-                                    <Box flex='1' />
-                                    <IconButton
-                                        aria-label='close'
-                                        icon='close'
-                                        onClick={() => setShow(false)}
+
+                                    <Code
+                                        zIndex={0}
+                                        value={code}
+                                        onChange={setCode}
                                     />
                                 </Stack>
 
-                                <Code
-                                    zIndex={0}
-                                    value={code}
-                                    onChange={setCode}
-                                />
-                            </Stack>
-
-                            <Stack flex='0 0' spacing='40px' px={X_PADDING}>
-                                <Stack
-                                    width='100%'
-                                    spacing='10px'
-                                    align='stretch'
-                                >
-                                    <Box fontWeight='500'>Title</Box>
-                                    <Input
-                                        shadow='sm'
-                                        minWidth='200px'
-                                        maxWidth='600px'
-                                        w='auto'
-                                        value={title}
-                                        onChange={(e) => setTitle(e.value)}
-                                    />
-                                </Stack>
-                                {/* <Box flex='1' /> */}
-                                <Box>
-                                    A bot will open a pull request on github
-                                    with the changes made <br />
-                                    You can{' '}
-                                    <Box
-                                        cursor='pointer'
-                                        color='blue.500'
-                                        d='inline'
-                                        mx='0.2em'
+                                <Stack flex='0 0' spacing='40px' px={X_PADDING}>
+                                    <Stack
+                                        width='100%'
+                                        spacing='10px'
+                                        align='stretch'
                                     >
-                                        login with your github profile
+                                        <Box fontWeight='500'>Title</Box>
+                                        <Input
+                                            shadow='sm'
+                                            minWidth='200px'
+                                            maxWidth='600px'
+                                            w='auto'
+                                            value={title}
+                                            onChange={(e) => setTitle(e.value)}
+                                        />
+                                    </Stack>
+                                    {/* <Box flex='1' /> */}
+                                    <Box>
+                                        A bot will open a pull request on github
+                                        with the changes made <br />
+                                        You can{' '}
+                                        <Box
+                                            cursor='pointer'
+                                            color='blue.500'
+                                            d='inline'
+                                            mx='0.2em'
+                                        >
+                                            login with your github profile
+                                        </Box>
+                                        if you want to open the pr with your
+                                        account
                                     </Box>
-                                    if you want to open the pr with your account
+                                    <Button
+                                        fontWeight='600'
+                                        isLoading={submitState.loading}
+                                        leftIcon='edit'
+                                        // shadow='sm'
+                                        // px='10px'
+                                        // py='8px'
+                                        // bg='#eee'
+                                        display='inline-block'
+                                        // borderRadius='6px'
+                                        onClick={onSubmit}
+                                    >
+                                        Open Pull Request
+                                    </Button>
+                                    <Box h='30px' />
+                                </Stack>
+                            </Fragment>
+                        )}
+                        {prUrl && (
+                            <Stack
+                                align='center'
+                                justify='center'
+                                minHeight='400px'
+                                fontWeight='500'
+                                spacing='40px'
+                                flex='0 0'
+                            >
+                                <Box fontSize='2em' fontWeight='600'>
+                                    Changes submitted!
                                 </Box>
-                                <Button
-                                    fontWeight='600'
-                                    isLoading={submitState.loading}
-                                    leftIcon='edit'
-                                    // shadow='sm'
-                                    // px='10px'
-                                    // py='8px'
-                                    // bg='#eee'
-                                    display='inline-block'
-                                    // borderRadius='6px'
-                                    onClick={onSubmit}
-                                >
-                                    Open Pull Request
-                                </Button>
-                                <Box h='30px' />
+                                <Box>
+                                    You can find your pull request{' '}
+                                    <MyLink href={prUrl}>here</MyLink>
+                                </Box>
+                                <Box>
+                                    If you want to integrate Edit This Page on
+                                    your own website check out the{' '}
+                                    <MyLink href={GITHUB_REPO}>
+                                        github repo
+                                    </MyLink>
+                                </Box>
                             </Stack>
-                        </Fragment>
-                    )}
-                    {prUrl && (
-                        <Stack
-                            align='center'
-                            justify='center'
-                            minHeight='400px'
-                            fontWeight='500'
-                            spacing='40px'
-                            flex='0 0'
-                        >
-                            <Box fontSize='2em' fontWeight='600'>
-                                Changes submitted!
-                            </Box>
-                            <Box>
-                                You can find your pull request{' '}
-                                <MyLink href={prUrl}>here</MyLink>
-                            </Box>
-                            <Box>
-                                If you want to integrate Edit This Page on your
-                                own website check out the{' '}
-                                <MyLink href={GITHUB_REPO}>github repo</MyLink>
-                            </Box>
-                        </Stack>
-                    )}
-                    {/* <EditOverly /> */}
-                </Stack>
-            </Modal>
+                        )}
+                        {/* <EditOverly /> */}
+                    </Stack>
+                </Modal>
+            </LightMode>
         </ThemeProvider>
     )
 }

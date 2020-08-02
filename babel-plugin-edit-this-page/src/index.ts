@@ -1,1 +1,1 @@
-export { babelPlugin as default, babelPlugin as plugin } from './babel-plugin'
+export { babelPlugin as default, babelPlugin as plugin, InjectedParams } from './babel-plugin'

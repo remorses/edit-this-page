@@ -51,6 +51,13 @@ describe('github', () => {
         })
         console.log(count)
     })
+    it('getMyUsername', async () => {
+        var x = await getMyUsername(octokit)
+        assert(x)
+        var x = await getMyUsername(octokit)
+        assert(x)
+        console.log(x)
+    })
     it('pull request', async () => {
         const newBranchName = uuid.v4()
         const forkRes = await createForkAndBranch(octokit, {

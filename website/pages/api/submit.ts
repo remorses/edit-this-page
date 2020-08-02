@@ -6,6 +6,7 @@ import * as uuid from 'uuid'
 import { GITHUB_TOKEN, MAX_WEEKLY_PR_COUNT } from '../../constants'
 import { pretty, cors } from '../../support'
 import dayjs from 'dayjs'
+import memoize from 'memoizee'
 
 const handler: NextApiHandler = async (req, res) => {
     // TODO rate limit edits to a repository to not get banned by github
@@ -79,11 +80,16 @@ const handler: NextApiHandler = async (req, res) => {
     }
 }
 
-// TODO memoize this function
-export async function getMyUsername(octokit: Octokit) {
-    const { data } = await octokit.users.getAuthenticated()
-    return data.login
-}
+export const getMyUsername = memoize(
+    async (octokit: Octokit) => {
+        const { data } = await octokit.users.getAuthenticated()
+        return data.login
+    },
+    {
+        promise: true,
+        normalizer: () => '',
+    },
+)
 
 export async function createForkAndBranch(
     octokit: Octokit,

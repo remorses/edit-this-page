@@ -130,7 +130,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                             direction='row'
                             py='10px'
                             px={X_PADDING}
-                            zIndex={4}
+                            
                         >
                             <Stack
                                 direction='row'
@@ -156,7 +156,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                             />
                         </Stack>
 
-                        <Code value={code} onChange={setCode} />
+                        <Code zIndex={0} value={code} onChange={setCode} />
                     </Stack>
 
                     <Stack flex='0 0' spacing='40px' px={X_PADDING}>
@@ -168,6 +168,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                                 maxWidth='600px'
                                 w='auto'
                                 value={title}
+                                onChange={e => setTitle(e.value)}
                             />
                         </Stack>
                         {/* <Box flex='1' /> */}

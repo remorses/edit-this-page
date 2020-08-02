@@ -89,8 +89,8 @@ export const Code = ({
     return (
         <Box
             // shadow='sm'
-            // overflowX='auto'
-            // overflowY='visible'
+            overflowX='auto'
+            overflowY='visible'
             height='auto'
             bg='gray.50'
             // align='stretch'
@@ -118,7 +118,7 @@ export const Code = ({
                     overflow: 'visible',
                     // width: '100%',
                     // overflowX: 'auto',
-                    margin: '-40px 0',
+                    // margin: '-40px 0',
                     fontFamily: CODE_FONT,
                     ...style,
                 }}

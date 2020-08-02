@@ -2,7 +2,14 @@
 import { css, jsx } from '@emotion/core'
 import { Box, Stack } from 'layout-kit-react'
 import pick from 'lodash/pick'
-import { Fragment, ReactNode, useEffect, useState, useCallback } from 'react'
+import {
+    Fragment,
+    ReactNode,
+    useEffect,
+    useState,
+    useCallback,
+    useMemo,
+} from 'react'
 import { ThemeProvider } from '@chakra-ui/core'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
@@ -48,6 +55,11 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
             .catch((error) => setSubmitState((x) => ({ ...x, error })))
     }, [code, params])
 
+    const filePathParts = useMemo(() => {
+        const parts = (params.editThisPageFilePath || '').split('/')
+        return parts
+    }, [params])
+
     return (
         <ThemeProvider>
             {/* <Global styles={emotionNormalize} /> */}
@@ -86,16 +98,27 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                 <Stack
                     align='stretch'
                     // p='20px'
-                    spacing='40px'
+                    spacing='0px'
                     position='relative'
                 >
-                    <Stack py='20px'>
-                        <Box fontWeight='500'>
-                            {params?.editThisPageFilePath}
-                        </Box>
+                    <Stack py='20px' px='20px'>
+                        <Stack
+                            direction='row'
+                            fontSize='1.2em'
+                            fontWeight='600'
+                            spacing='8px'
+                        >
+                            {filePathParts.slice(0, -1).map((s) => (
+                                <Fragment>
+                                    <Box opacity={0.5}>{s}</Box>
+                                    <Box opacity={0.5}>/</Box>
+                                </Fragment>
+                            ))}
+                            <Box>{filePathParts.reverse()[0]}</Box>
+                        </Stack>
                     </Stack>
 
-                    <Code value={code} onChange={setCode} />
+                    <Code borderWidth='1px' value={code} onChange={setCode} />
 
                     <Stack direction='row'>
                         {/* <Box flex='1' /> */}

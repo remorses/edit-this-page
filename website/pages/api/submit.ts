@@ -9,7 +9,6 @@ import dayjs from 'dayjs'
 import memoize from 'memoizee'
 
 const handler: NextApiHandler = async (req, res) => {
-    // TODO rate limit edits to a repository to not get banned by github
     // TODO only certain hosts can make more than N edits, people can pay to get more edits
     try {
         await cors(req, res)

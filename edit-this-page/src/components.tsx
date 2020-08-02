@@ -67,14 +67,6 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
 
     return (
         <ThemeProvider>
-            {/* <Global
-                styles={css`
-                    * {
-                        flex-shrink: 0;
-                    }
-                `}
-            /> */}
-
             <Box
                 as='button'
                 className='btn btn-primary mb-4'
@@ -211,7 +203,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                                     // borderRadius='6px'
                                     onClick={onSubmit}
                                 >
-                                    {'Open Pull Request'}
+                                    Open Pull Request
                                 </Button>
                                 <Box h='30px' />
                             </Stack>
@@ -279,6 +271,6 @@ function getParams(): InjectedParams {
 
 export const MyLink = (props) => {
     return (
-        <Link color='blue.500' as='a' d='inline' {...props} />
+        <Link color='blue.500' as='a' d='inline' target='_blank' {...props} />
     )
 }

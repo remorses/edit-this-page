@@ -137,7 +137,9 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                                         <Box opacity={0.5}>/</Box>
                                     </Fragment>
                                 ))}
-                                <Box>{filePathParts.reverse()[0]}</Box>
+                                <Box>
+                                    {filePathParts[filePathParts.length - 1]}
+                                </Box>
                             </Stack>
                             <Box flex='1' />
                             <IconButton

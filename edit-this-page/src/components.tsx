@@ -66,6 +66,7 @@ export function EditThisPageButton({
     })
     const close = () => {
         setShow(false)
+        setCode(params.editThisPageSourceCode)
         setSubmitState((x) => ({ ...x, error: null }))
     }
     const [prUrl, setPrUrl] = useState('')
@@ -307,9 +308,7 @@ export function EditThisPageButton({
                                 >
                                     {submitState.error?.message}
                                 </Box>
-                                <Button onClick={close}>
-                                    Close
-                                </Button>
+                                <Button onClick={close}>Close</Button>
                             </Stack>
                         )}
                         {/* <EditOverly /> */}

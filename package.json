@@ -1,8 +1,8 @@
 {
     "private": true,
     "workspaces": [
-        "edit-this-page",
         "babel-plugin-edit-this-page",
+        "edit-this-page",
         "website"
     ],
     "scripts": {

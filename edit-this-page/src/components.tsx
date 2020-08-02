@@ -10,7 +10,7 @@ import {
     useCallback,
     useMemo,
 } from 'react'
-import { ThemeProvider, IconButton, Input } from '@chakra-ui/core'
+import { ThemeProvider, IconButton, Input, Button } from '@chakra-ui/core'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
 import { Code } from './Code'
@@ -32,6 +32,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
         setParams(getParams())
     }, [])
     const [show, setShow] = useState(false)
+    const [title, setTitle] = useState('')
     const [code, setCode] = useState(params?.editThisPageSourceCode || '')
     const [submitState, setSubmitState] = useState({
         loading: false,
@@ -40,6 +41,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
     const [prUrl, setPrUrl] = useState('')
     useEffect(() => {
         setCode(params?.editThisPageSourceCode)
+        setTitle(`Changes to ${params?.editThisPageFilePath}`)
     }, [params])
 
     const onSubmit = useCallback(() => {
@@ -76,6 +78,9 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
             <Modal
                 css={css`
                     position: fixed;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: stretch;
                     height: auto;
                     top: 40px;
                     left: 20px;
@@ -102,6 +107,10 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                 aria-labelledby='modal-label'
             >
                 <Stack
+                    maxWidth='1000px'
+                    // minWidth='100%
+                    width={['100%', null, null, '80%']}
+                    alignSelf='center'
                     bg='white'
                     borderRadius='10px'
                     align='stretch'
@@ -141,23 +150,40 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                         <Code value={code} onChange={setCode} />
                     </Stack>
 
-                    <Stack spacing='20px' px={X_PADDING}>
-                        <Input />
+                    <Stack spacing='40px' px={X_PADDING}>
+                        <Stack width='100%' spacing='10px' align='stretch'>
+                            <Box fontWeight='500'>Title</Box>
+                            <Input
+                                shadow='sm'
+                                minWidth='200px'
+                                maxWidth='600px'
+                                w='auto'
+                                value={title}
+                            />
+                        </Stack>
                         {/* <Box flex='1' /> */}
-                        <Box
-                            fontWeight='500'
-                            px='10px'
-                            py='8px'
-                            bg='#eee'
+                        <Box>
+                            A bot will open a pull request on github with the
+                            changes made <br />
+                            You can login with your github profile if you want
+                            to open the pr with your account
+                        </Box>
+                        <Button
+                            fontWeight='600'
+                            isLoading={submitState.loading}
+                            leftIcon='edit'
+                            // shadow='sm'
+                            // px='10px'
+                            // py='8px'
+                            // bg='#eee'
                             display='inline-block'
-                            borderRadius='6px'
-                            as='button'
+                            // borderRadius='6px'
                             onClick={onSubmit}
                         >
                             {submitState.loading
                                 ? 'Loading'
                                 : 'Open Pull Request'}
-                        </Box>
+                        </Button>
                     </Stack>
                     <Box>{prUrl}</Box>
                     {/* <EditOverly /> */}

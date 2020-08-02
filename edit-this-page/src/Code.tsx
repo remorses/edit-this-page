@@ -90,7 +90,7 @@ export const Code = ({
             // shadow='sm'
             overflowX='auto'
             bg='gray.50'
-            align='stretch'
+            // align='stretch'
             // borderRadius='8px'
             css={css`
                 textarea {
@@ -101,7 +101,6 @@ export const Code = ({
                     -webkit-box-shadow: none;
                     -moz-box-shadow: none;
                     box-shadow: none;
-                    resize: none; /*remove the resize handle on the bottom right*/
                 }
             `}
             {...rest}
@@ -113,7 +112,7 @@ export const Code = ({
                 onValueChange={onChange}
                 style={{
                     whiteSpace: 'pre',
-                    width: '100%',
+                    // width: '100%',
                     // overflowX: 'auto',
                     margin: '-40px 0',
                     fontFamily: CODE_FONT,

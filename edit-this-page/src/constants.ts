@@ -6,7 +6,7 @@ export const HANDLE_EDITS_GUIDE_URL = `http://edit-this-page.now.sh/docs`
 export const GITHUB_REPO = `https://github.com/remorses/edit-this-page`
 
 function isTesting() {
-    if (typeof process !== 'undefined' && process?.env?.TESTING) {
+    if (typeof process !== 'undefined' && process?.env?.TESTING_EDIT_THIS_PAGE) {
         return true
     }
     return false

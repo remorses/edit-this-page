@@ -93,7 +93,6 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     border-radius: 10px;
                     overflow: hidden;
                     border: none;
-                    overflow: auto;
                     outline: none;
 
                     -webkit-box-shadow: none;
@@ -108,6 +107,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
             >
                 <Stack
                     maxWidth='1000px'
+                    overflowY='auto'
                     // minWidth='100%
                     width={['100%', null, null, '80%']}
                     alignSelf='center'

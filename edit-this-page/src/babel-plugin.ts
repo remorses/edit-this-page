@@ -3,6 +3,7 @@ import { Visitor } from '@babel/traverse'
 import jsxSyntaxPlugin from 'babel-plugin-syntax-jsx'
 import minimatch from 'minimatch'
 import path from 'path'
+import fs from 'fs'
 import * as BabelTypes from '@babel/types'
 import { getGitConfigSync, getRepoRoot } from 'get-git-config'
 import { execSync } from 'child_process'
@@ -56,6 +57,7 @@ export const babelPlugin = (
                         remote?.[Object.keys(remote)[0]]?.url ||
                         ''
                     const branch = getCurrentBranch()
+
                     // TODO add additional attributes to the button props taken from a config file, like target branch ...
                     const toInject: InjectedParams = {
                         editThisPageFilePath: relativePathToRepo,
@@ -64,13 +66,24 @@ export const babelPlugin = (
                         editThisPageBranch: branch,
                     }
 
+                    // babel source code is the transformed markdown, we need the original source code
+                    // console.log(path.extname(filePath))
+                    if (
+                        ['.md', '.mdx'].includes(path.extname(filePath))
+                    ) {
+                        toInject.editThisPageSourceCode = fs
+                            .readFileSync(filePath)
+                            .toString()
+                    }
+
                     const codeToInsert = `
-                    if (typeof window !== 'undefined' ) {
+                    if (typeof window !== 'undefined') {
                         const toInject = ${JSON.stringify(toInject)};
                         for (let k in toInject) {
                             window[k] = toInject[k];
                         }
                     }\n`
+
                     // this.file.code = codeToInsert + '\n' + this.file.code
                     debug('adding top level source code variable')
                     const parsed = babel.parse(codeToInsert, {

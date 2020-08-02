@@ -43,7 +43,7 @@ const handler: NextApiHandler = async (req, res) => {
         })
 
         let commitRes = await commitFiles(octokit, {
-            githubUrl,
+            githubUrl: forkRes.html_url,
             message: `Edited '${filePath}' via 'edit-this-page'`,
             branch: newBranchName,
             tree: [
@@ -56,11 +56,10 @@ const handler: NextApiHandler = async (req, res) => {
         })
 
         const { prUrl, ...prRes } = await createPr(octokit, {
-            githubUrl,
+            githubUrl: forkRes.html_url,
             branch: branchRef,
             prCreator: await getMyUsername(octokit),
             title: title || `Changes for '${filePath}'`,
-            // TODO get the current branch or use babel config
             baseBranch,
         })
 

@@ -3,7 +3,7 @@ import { babelPlugin, getCurrentBranch } from '../src/babel-plugin'
 import { assert } from 'console'
 
 const OPTIONS = {
-    plugins: ['@babel/plugin-syntax-jsx', [babelPlugin, {}]],
+    plugins: [[babelPlugin, {}]],
 }
 
 describe('babel plugin', () => {

@@ -1,8 +1,8 @@
 {
-    "name": "edit-this-page",
+    "name": "babel-plugin-edit-this-page",
     "_": "[bump]",
     "version": "0.0.0",
-    "description": "Make any website editable by your users",
+    "description": "Babel plugin for edit-this-page",
     "main": "dist/index.js",
     "module": "esm/index.js",
     "types": "dist/index.d.ts",
@@ -15,7 +15,7 @@
     "repository": {
         "type": "git",
         "url": "remorses/edit-this-page",
-        "directory": "edit-this-page"
+        "directory": "babel-plugin-edit-this-page"
     },
     "files": [
         "/dist/*",
@@ -30,25 +30,20 @@
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
     "license": "ISC",
     "devDependencies": {
-        "@emotion/core": "^10.0.28",
-        "babel-plugin-edit-this-page": "*",
         "@types/lodash": "^4.14.149",
         "@types/mocha": "^5.2.7",
-        "@types/react": "^16.9.25",
+        "@types/node": "^14.0.27",
         "dotenv": "^8.2.0",
         "mocha": "^6.1.4",
-        "react": "^16.13.1",
-        "react-dom": "^16.13.1",
         "sucrase": "^3.12.1",
         "typescript": "^3.8.3"
     },
-    "peerDependencies": {
-        "react": "*",
-        "react-dom": "*"
-    },
     "dependencies": {
-        "layout-kit-react": "^0.1.8",
-        "prism-react-renderer": "^1.1.1",
-        "react-overlays": "^4.1.0"
+        "@babel/core": "^7.11.0",
+        "@babel/traverse": "^7.11.0",
+        "@babel/types": "^7.11.0",
+        "babel-plugin-syntax-jsx": "^6.18.0",
+        "get-git-config": "^0.0.4",
+        "minimatch": "^3.0.4"
     }
 }

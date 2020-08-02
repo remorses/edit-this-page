@@ -14,13 +14,14 @@
         "timeout": 9999999999
     },
     "dependencies": {
+        "edit-this-page": "*",
+        "babel-plugin-edit-this-page": "*",
         "@chakra-ui/core": "0.x",
         "@emotion/core": "^10.0.28",
         "@emotion/styled": "^10.0.27",
         "@octokit/rest": "^18.0.3",
         "@types/uuid": "^8.0.0",
         "dokz": "latest",
-        "edit-this-page": "*",
         "next": "latest",
         "next-transpile-modules": "^4.0.2",
         "parse-github-url": "^1.0.2",

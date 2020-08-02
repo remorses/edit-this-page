@@ -12,7 +12,7 @@ import {
 } from 'react'
 import { ThemeProvider, IconButton, Input, Button, Link } from '@chakra-ui/core'
 import Modal from 'react-overlays/Modal'
-import { InjectedParams } from './babel-plugin'
+import { InjectedParams } from 'babel-plugin-edit-this-page'
 import { Code } from './Code'
 import { submitCode } from './submit'
 import { API_URL, GITHUB_REPO } from './constants'

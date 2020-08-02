@@ -89,14 +89,14 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     spacing='40px'
                     position='relative'
                 >
-                    <Stack
-                        // shadow='sm'
-                        overflowX='auto'
-                        bg='gray.50'
-                        borderRadius='8px'
-                    >
-                        <Code value={code} onChange={setCode} />
+                    <Stack py='20px'>
+                        <Box fontWeight='500'>
+                            {params?.editThisPageFilePath}
+                        </Box>
                     </Stack>
+
+                    <Code value={code} onChange={setCode} />
+
                     <Stack direction='row'>
                         {/* <Box flex='1' /> */}
                         <Box

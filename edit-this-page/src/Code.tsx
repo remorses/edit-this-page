@@ -1,8 +1,12 @@
+// @jsx jsx
 import { Box, Stack, Flex } from 'layout-kit-react'
 import Highlight, { defaultProps } from 'prism-react-renderer'
 import prismTheme from 'prism-react-renderer/themes/nightOwlLight'
 import React, { useCallback } from 'react'
 import Editor from 'react-simple-code-editor'
+import { css, jsx } from '@emotion/core'
+
+jsx
 
 const CODE_FONT = `'Fira code', 'Fira Mono', monospace`
 
@@ -82,19 +86,40 @@ export const Code = ({
     )
 
     return (
-        <Editor
-            value={value}
-            padding={60}
-            highlight={highlightCode}
-            onValueChange={onChange}
-            style={{
-                whiteSpace: 'pre',
-                // paddingLeft: '20px',
-                // overflowX: 'auto',
-                fontFamily: CODE_FONT,
-                ...style,
-            }}
+        <Stack
+            // shadow='sm'
+            overflowX='auto'
+            bg='gray.50'
+            align='stretch'
+            borderRadius='8px'
+            css={css`
+                textarea {
+                    border: none;
+                    overflow: auto;
+                    outline: none;
+
+                    -webkit-box-shadow: none;
+                    -moz-box-shadow: none;
+                    box-shadow: none;
+                    resize: none; /*remove the resize handle on the bottom right*/
+                }
+            `}
             {...rest}
-        />
+        >
+            <Editor
+                value={value}
+                padding={60}
+                highlight={highlightCode}
+                onValueChange={onChange}
+                style={{
+                    whiteSpace: 'pre',
+                    width: '100%',
+                    // overflowX: 'auto',
+                    margin: '-60px 0',
+                    fontFamily: CODE_FONT,
+                    ...style,
+                }}
+            />
+        </Stack>
     )
 }

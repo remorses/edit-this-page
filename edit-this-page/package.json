@@ -23,9 +23,9 @@
     ],
     "scripts": {
         "compile": "tsc --incremental && tsc --module ESNext --outDir esm --incremental",
-        "test": "TESTING_EDIT_THIS_PAGE=1 NODE_ENV=test mocha --colors --exit",
+        "test": "NODE_ENV=test mocha --colors --exit",
         "publish": "yarn publish || echo 'cannot publish'",
-        "dev": "TESTING_EDIT_THIS_PAGE=1 yarn compile && node dist"
+        "dev": "yarn compile && node dist"
     },
     "keywords": [],
     "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",

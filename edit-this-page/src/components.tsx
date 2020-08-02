@@ -39,6 +39,7 @@ const X_PADDING = '40px'
 export function EditThisPageButton({
     unstyled,
     children = 'Edit This Page',
+    ...rest
 }: EditThisPageButtonProps) {
     const [params, setParams] = useState<InjectedParams>({})
     useEffect(() => {
@@ -82,10 +83,14 @@ export function EditThisPageButton({
         <ThemeProvider>
             <LightMode>
                 {!unstyled && (
-                    <Button onClick={() => setShow(true)}>{children}</Button>
+                    <Button onClick={() => setShow(true)} {...rest}>
+                        {children}
+                    </Button>
                 )}
                 {unstyled && (
-                    <Box onClick={() => setShow(true)}>{children}</Box>
+                    <Box onClick={() => setShow(true)} {...rest}>
+                        {children}
+                    </Box>
                 )}
                 <Modal
                     css={css`

@@ -4,6 +4,7 @@ export type SubmitArgs = {
     githubUrl: string
     filePath: string
     baseBranch: string
+    title: string
     changedCode: string
 }
 

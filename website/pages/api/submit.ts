@@ -12,6 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
         changedCode,
         githubUrl,
         baseBranch,
+        title,
     }: SubmitArgs = req.body
 
     const octokit = new Octokit({ auth: GITHUB_TOKEN })
@@ -40,7 +41,7 @@ const handler: NextApiHandler = async (req, res) => {
         githubUrl,
         branch: branchRef,
         prCreator: await getMyUsername(octokit),
-        title: `Changes for '${filePath}'`,
+        title: title || `Changes for '${filePath}'`,
         // TODO get the current branch or use babel config
         baseBranch,
     })

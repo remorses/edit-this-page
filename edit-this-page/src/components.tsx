@@ -50,6 +50,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
             githubUrl: params.editThisPageGitRemote,
             filePath: params.editThisPageFilePath,
             changedCode: code,
+            title,
             baseBranch: params.editThisPageBranch,
         })
             .then((r) => {
@@ -57,7 +58,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                 setPrUrl(r?.url || '')
             })
             .catch((error) => setSubmitState((x) => ({ ...x, error })))
-    }, [code, params])
+    }, [code, params, title])
 
     const filePathParts = useMemo(() => {
         const parts = (params.editThisPageFilePath || '').split('/')

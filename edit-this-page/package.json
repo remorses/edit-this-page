@@ -31,10 +31,10 @@
     "license": "ISC",
     "devDependencies": {
         "@emotion/core": "^10.0.28",
-        "babel-plugin-edit-this-page": "*",
         "@types/lodash": "^4.14.149",
         "@types/mocha": "^5.2.7",
         "@types/react": "^16.9.25",
+        "babel-plugin-edit-this-page": "*",
         "dotenv": "^8.2.0",
         "mocha": "^6.1.4",
         "react": "^16.13.1",
@@ -43,11 +43,14 @@
         "typescript": "^3.8.3"
     },
     "peerDependencies": {
+        "@chakra-ui/core": "^0.8",
+        "@emotion/core": "*",
         "react": "*",
         "react-dom": "*"
     },
     "dependencies": {
         "layout-kit-react": "^0.1.8",
+        "lodash": "^4.17.19",
         "prism-react-renderer": "^1.1.1",
         "react-overlays": "^4.1.0"
     }

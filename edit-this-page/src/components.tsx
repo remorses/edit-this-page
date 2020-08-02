@@ -29,11 +29,17 @@ jsx
 // we use some pseudo random coords so nested modals
 // don't sit right on top of each other.
 
-export type EditThisPageButtonProps = { children?: ReactNode }
+export type EditThisPageButtonProps = {
+    unstyled?: boolean
+    children?: ReactNode
+}
 
 const X_PADDING = '40px'
 
-export function EditThisPageButton(props: EditThisPageButtonProps) {
+export function EditThisPageButton({
+    unstyled,
+    children = 'Edit This Page',
+}: EditThisPageButtonProps) {
     const [params, setParams] = useState<InjectedParams>({})
     useEffect(() => {
         setParams(getParams())
@@ -75,13 +81,12 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
     return (
         <ThemeProvider>
             <LightMode>
-                <Box
-                    as='button'
-                    className='btn btn-primary mb-4'
-                    onClick={() => setShow(true)}
-                >
-                    Open Modal
-                </Box>
+                {!unstyled && (
+                    <Button onClick={() => setShow(true)}>{children}</Button>
+                )}
+                {unstyled && (
+                    <Box onClick={() => setShow(true)}>{children}</Box>
+                )}
                 <Modal
                     css={css`
                         position: fixed;

@@ -171,8 +171,8 @@ export function EditThisPageButton({
                                         >
                                             {filePathParts
                                                 .slice(0, -1)
-                                                .map((s) => (
-                                                    <Fragment>
+                                                .map((s, i) => (
+                                                    <Fragment key={i}>
                                                         <Box opacity={0.5}>
                                                             {s}
                                                         </Box>

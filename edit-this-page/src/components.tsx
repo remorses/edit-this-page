@@ -10,12 +10,12 @@ import {
     useCallback,
     useMemo,
 } from 'react'
-import { ThemeProvider, IconButton, Input, Button } from '@chakra-ui/core'
+import { ThemeProvider, IconButton, Input, Button, Link } from '@chakra-ui/core'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
 import { Code } from './Code'
 import { submitCode } from './submit'
-import { API_URL } from './constants'
+import { API_URL, GITHUB_REPO } from './constants'
 
 jsx
 
@@ -124,86 +124,122 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     spacing='20px'
                     position='relative'
                 >
-                    <Stack flex='0 0' align='stretch'>
+                    {!prUrl && (
+                        <Fragment>
+                            <Stack flex='0 0' align='stretch'>
+                                <Stack
+                                    align='center'
+                                    direction='row'
+                                    py='10px'
+                                    px={X_PADDING}
+                                >
+                                    <Stack
+                                        direction='row'
+                                        fontSize='1.2em'
+                                        fontWeight='500'
+                                        spacing='8px'
+                                    >
+                                        {filePathParts.slice(0, -1).map((s) => (
+                                            <Fragment>
+                                                <Box opacity={0.5}>{s}</Box>
+                                                <Box opacity={0.5}>/</Box>
+                                            </Fragment>
+                                        ))}
+                                        <Box>
+                                            {
+                                                filePathParts[
+                                                    filePathParts.length - 1
+                                                ]
+                                            }
+                                        </Box>
+                                    </Stack>
+                                    <Box flex='1' />
+                                    <IconButton
+                                        aria-label='close'
+                                        icon='close'
+                                        onClick={() => setShow(false)}
+                                    />
+                                </Stack>
+
+                                <Code
+                                    zIndex={0}
+                                    value={code}
+                                    onChange={setCode}
+                                />
+                            </Stack>
+
+                            <Stack flex='0 0' spacing='40px' px={X_PADDING}>
+                                <Stack
+                                    width='100%'
+                                    spacing='10px'
+                                    align='stretch'
+                                >
+                                    <Box fontWeight='500'>Title</Box>
+                                    <Input
+                                        shadow='sm'
+                                        minWidth='200px'
+                                        maxWidth='600px'
+                                        w='auto'
+                                        value={title}
+                                        onChange={(e) => setTitle(e.value)}
+                                    />
+                                </Stack>
+                                {/* <Box flex='1' /> */}
+                                <Box>
+                                    A bot will open a pull request on github
+                                    with the changes made <br />
+                                    You can{' '}
+                                    <Box
+                                        cursor='pointer'
+                                        color='blue.500'
+                                        d='inline'
+                                        mx='0.2em'
+                                    >
+                                        login with your github profile
+                                    </Box>
+                                    if you want to open the pr with your account
+                                </Box>
+                                <Button
+                                    fontWeight='600'
+                                    isLoading={submitState.loading}
+                                    leftIcon='edit'
+                                    // shadow='sm'
+                                    // px='10px'
+                                    // py='8px'
+                                    // bg='#eee'
+                                    display='inline-block'
+                                    // borderRadius='6px'
+                                    onClick={onSubmit}
+                                >
+                                    {'Open Pull Request'}
+                                </Button>
+                                <Box h='30px' />
+                            </Stack>
+                        </Fragment>
+                    )}
+                    {prUrl && (
                         <Stack
                             align='center'
-                            direction='row'
-                            py='10px'
-                            px={X_PADDING}
-                            
+                            justify='center'
+                            minHeight='400px'
+                            fontWeight='500'
+                            spacing='40px'
+                            flex='0 0'
                         >
-                            <Stack
-                                direction='row'
-                                fontSize='1.2em'
-                                fontWeight='500'
-                                spacing='8px'
-                            >
-                                {filePathParts.slice(0, -1).map((s) => (
-                                    <Fragment>
-                                        <Box opacity={0.5}>{s}</Box>
-                                        <Box opacity={0.5}>/</Box>
-                                    </Fragment>
-                                ))}
-                                <Box>
-                                    {filePathParts[filePathParts.length - 1]}
-                                </Box>
-                            </Stack>
-                            <Box flex='1' />
-                            <IconButton
-                                aria-label='close'
-                                icon='close'
-                                onClick={() => setShow(false)}
-                            />
-                        </Stack>
-
-                        <Code zIndex={0} value={code} onChange={setCode} />
-                    </Stack>
-
-                    <Stack flex='0 0' spacing='40px' px={X_PADDING}>
-                        <Stack width='100%' spacing='10px' align='stretch'>
-                            <Box fontWeight='500'>Title</Box>
-                            <Input
-                                shadow='sm'
-                                minWidth='200px'
-                                maxWidth='600px'
-                                w='auto'
-                                value={title}
-                                onChange={e => setTitle(e.value)}
-                            />
-                        </Stack>
-                        {/* <Box flex='1' /> */}
-                        <Box>
-                            A bot will open a pull request on github with the
-                            changes made <br />
-                            You can{' '}
-                            <Box
-                                cursor='pointer'
-                                color='blue.500'
-                                d='inline'
-                                mx='0.2em'
-                            >
-                                login with your github profile
+                            <Box fontSize='2em' fontWeight='600'>
+                                Changes submitted!
                             </Box>
-                            if you want to open the pr with your account
-                        </Box>
-                        <Button
-                            fontWeight='600'
-                            isLoading={submitState.loading}
-                            leftIcon='edit'
-                            // shadow='sm'
-                            // px='10px'
-                            // py='8px'
-                            // bg='#eee'
-                            display='inline-block'
-                            // borderRadius='6px'
-                            onClick={onSubmit}
-                        >
-                            {submitState.loading
-                                ? 'Loading'
-                                : 'Open Pull Request'}
-                        </Button>
-                    </Stack>
-                    <Box>{prUrl}</Box>
+                            <Box>
+                                You can find your pull request{' '}
+                                <MyLink href={prUrl}>here</MyLink>
+                            </Box>
+                            <Box>
+                                If you want to integrate Edit This Page on your
+                                own website check out the{' '}
+                                <MyLink href={GITHUB_REPO}>github repo</MyLink>
+                            </Box>
+                        </Stack>
+                    )}
                     {/* <EditOverly /> */}
                 </Stack>
             </Modal>
@@ -239,4 +275,10 @@ function getParams(): InjectedParams {
         ]
         return pick(window as {}, keys)
     }
+}
+
+export const MyLink = (props) => {
+    return (
+        <Link color='blue.500' as='a' d='inline' {...props} />
+    )
 }

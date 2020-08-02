@@ -87,7 +87,7 @@ export const Code = ({
     )
 
     return (
-        <Box
+        <Flex
             // shadow='sm'
             overflowX='auto'
             overflowY='visible'
@@ -123,6 +123,6 @@ export const Code = ({
                     ...style,
                 }}
             />
-        </Box>
+        </Flex>
     )
 }

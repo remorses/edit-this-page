@@ -37,6 +37,7 @@ export const Code = ({
                     }) => (
                         <Box
                             flexShrink={0}
+                            overflow='visible'
                             // direction='column'
                             // spacing='0'
                             // p='20px'
@@ -86,9 +87,11 @@ export const Code = ({
     )
 
     return (
-        <Stack
+        <Box
             // shadow='sm'
-            overflowX='auto'
+            // overflowX='auto'
+            // overflowY='visible'
+            height='auto'
             bg='gray.50'
             // align='stretch'
             // borderRadius='8px'
@@ -112,6 +115,7 @@ export const Code = ({
                 onValueChange={onChange}
                 style={{
                     whiteSpace: 'pre',
+                    overflow: 'visible',
                     // width: '100%',
                     // overflowX: 'auto',
                     margin: '-40px 0',
@@ -119,6 +123,6 @@ export const Code = ({
                     ...style,
                 }}
             />
-        </Stack>
+        </Box>
     )
 }

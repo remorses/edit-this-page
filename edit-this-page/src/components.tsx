@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core'
+import { css, jsx, Global } from '@emotion/core'
 import { Box, Stack } from 'layout-kit-react'
 import pick from 'lodash/pick'
 import {
@@ -66,7 +66,13 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
 
     return (
         <ThemeProvider>
-            {/* <Global styles={emotionNormalize} /> */}
+            {/* <Global
+                styles={css`
+                    * {
+                        flex-shrink: 0;
+                    }
+                `}
+            /> */}
 
             <Box
                 as='button'
@@ -81,23 +87,22 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     display: flex;
                     flex-direction: column;
                     align-items: stretch;
-                    height: auto;
                     top: 40px;
                     left: 20px;
                     right: 20px;
                     bottom: 20px;
+                    /* height: 100vh; */
                     /* padding-bottom: 20px; */
                     /* bottom: 20px; */
                     z-index: 1040;
-                    min-height: 200px;
                     border-radius: 10px;
-                    overflow: hidden;
+                    /* overflow: visible; */
                     border: none;
                     outline: none;
-
                     -webkit-box-shadow: none;
                     -moz-box-shadow: none;
                     box-shadow: none;
+
                     /* overflow: hidden; */
                 `}
                 show={show}
@@ -118,7 +123,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     spacing='20px'
                     position='relative'
                 >
-                    <Stack align='stretch'>
+                    <Stack flex='0 0' align='stretch'>
                         <Stack
                             align='center'
                             direction='row'
@@ -152,7 +157,11 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                         <Code value={code} onChange={setCode} />
                     </Stack>
 
-                    <Stack spacing='40px' px={X_PADDING}>
+                    <Stack
+                        flex='0 0'
+                        spacing='40px'
+                        px={X_PADDING}
+                    >
                         <Stack width='100%' spacing='10px' align='stretch'>
                             <Box fontWeight='500'>Title</Box>
                             <Input

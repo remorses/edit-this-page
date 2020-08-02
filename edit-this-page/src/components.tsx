@@ -222,7 +222,9 @@ export function EditThisPageButton({
                                             maxWidth='600px'
                                             w='auto'
                                             value={title}
-                                            onChange={(e) => setTitle(e.value)}
+                                            onChange={(e) =>
+                                                setTitle(e?.target?.value)
+                                            }
                                         />
                                     </Stack>
                                     {/* <Box flex='1' /> */}

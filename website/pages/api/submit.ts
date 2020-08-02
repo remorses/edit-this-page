@@ -49,7 +49,7 @@ const handler: NextApiHandler = async (req, res) => {
 
         let commitRes = await commitFiles(octokit, {
             githubUrl: forkRes.html_url,
-            message: title,
+            message: title || `Changes by ${APP_NAME}`,
             branch: newBranchName,
             tree: [
                 {

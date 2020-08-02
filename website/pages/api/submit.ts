@@ -7,6 +7,8 @@ import { GITHUB_TOKEN } from '../../constants'
 import { pretty, cors } from '../../support'
 
 const handler: NextApiHandler = async (req, res) => {
+    // TODO rate limit edits to a repository to not get banned by github
+    // TODO only certain hosts can make more than N edits, people can pay to get more edits
     try {
         await cors(req, res)
         // throw new Error('unexpected error\n ai ai')

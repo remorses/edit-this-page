@@ -24,6 +24,7 @@
     "scripts": {
         "compile": "tsc --incremental && tsc --module ESNext --outDir esm --incremental",
         "test": "NODE_ENV=test mocha --colors --exit",
+        "publish": "yarn publish || echo 'cannot publish'",
         "dev": "yarn compile && node dist"
     },
     "keywords": [],

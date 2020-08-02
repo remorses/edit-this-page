@@ -1,0 +1,30 @@
+name: Npm Packages
+
+on:
+  push:
+    # branches:
+    #   - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: yarn build
+      - name: Bump version
+        if: github.ref == 'refs/heads/master'
+        uses: remorses/bump-version@js
+        with:
+          version_file: VERSION
+          ignore: dist, esm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: yarn run publish
+        if: github.ref == 'refs/heads/master'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}

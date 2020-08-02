@@ -7,6 +7,7 @@
     ],
     "scripts": {
         "dev": "yarn --cwd babel-plugin-edit-this-page tsc -w",
-        "build": "yarn --cwd dokz compile"
+        "build": "yarn workspaces run compile",
+        "publish": "yarn workspaces run publish"
     }
 }

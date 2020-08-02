@@ -41,6 +41,7 @@ export const babelPlugin = (
                             `cannot find the .git directory, edit-this-page plugin only works with git repos`,
                         )
                     }
+                    console.log('cwd', process.cwd())
                     const relativePathToRepo = path.relative(root, filePath)
                     const relativePathToBabel = path.relative(
                         process.cwd(),

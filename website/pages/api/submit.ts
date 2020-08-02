@@ -7,51 +7,60 @@ import * as uuid from 'uuid'
 import { pretty } from '../../support'
 
 const handler: NextApiHandler = async (req, res) => {
-    const {
-        filePath,
-        changedCode,
-        githubUrl,
-        baseBranch,
-        title,
-    }: SubmitArgs = req.body
+    try {
+        // throw new Error('unexpected error\n ai ai')
+        const {
+            filePath,
+            changedCode,
+            githubUrl,
+            baseBranch,
+            title,
+        }: SubmitArgs = req.body
 
-    const octokit = new Octokit({ auth: GITHUB_TOKEN })
+        const octokit = new Octokit({ auth: GITHUB_TOKEN })
 
-    const newBranchName = uuid.v4()
+        const newBranchName = uuid.v4()
 
-    const { branchRef, ...forkRes } = await createForkAndBranch(octokit, {
-        githubUrl,
-        newBranchName,
-    })
+        const { branchRef, ...forkRes } = await createForkAndBranch(octokit, {
+            githubUrl,
+            newBranchName,
+        })
 
-    let commitRes = await commitFiles(octokit, {
-        githubUrl,
-        message: `Edited '${filePath}' via 'edit-this-page'`,
-        branch: newBranchName,
-        tree: [
-            {
-                path: filePath,
-                mode: '100644',
-                content: changedCode,
-            },
-        ],
-    })
+        let commitRes = await commitFiles(octokit, {
+            githubUrl,
+            message: `Edited '${filePath}' via 'edit-this-page'`,
+            branch: newBranchName,
+            tree: [
+                {
+                    path: filePath,
+                    mode: '100644',
+                    content: changedCode,
+                },
+            ],
+        })
 
-    const { prUrl, ...prRes } = await createPr(octokit, {
-        githubUrl,
-        branch: branchRef,
-        prCreator: await getMyUsername(octokit),
-        title: title || `Changes for '${filePath}'`,
-        // TODO get the current branch or use babel config
-        baseBranch,
-    })
+        const { prUrl, ...prRes } = await createPr(octokit, {
+            githubUrl,
+            branch: branchRef,
+            prCreator: await getMyUsername(octokit),
+            title: title || `Changes for '${filePath}'`,
+            // TODO get the current branch or use babel config
+            baseBranch,
+        })
 
-    // console.log(data)
-    res.statusCode = 200
-    res.setHeader('Content-Type', 'application/json')
-    res.json({
-        url: prUrl,
-    })
+        // console.log(data)
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.json({
+            url: prUrl,
+        })
+    } catch (e) {
+        res.statusCode = 500
+        res.setHeader('Content-Type', 'application/json')
+        res.json({
+            error: e?.message || String(e),
+        })
+    }
 }
 
 // TODO memoize this function

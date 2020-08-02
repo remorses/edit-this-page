@@ -18,7 +18,8 @@ export const submitCode = async (data: SubmitArgs) => {
         body: JSON.stringify(data),
     })
     if (!r.ok) {
-        throw new Error(r.statusText)
+        const res = await r.json().catch(() => null)
+        throw new Error(res?.error ? res?.error : r.statusText)
     }
     return await r.json()
 }

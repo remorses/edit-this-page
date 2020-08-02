@@ -71,7 +71,9 @@ export function EditThisPageButton({
                 setSubmitState((x) => ({ ...x, loading: false }))
                 setPrUrl(r?.url || '')
             })
-            .catch((error) => setSubmitState((x) => ({ ...x, error })))
+            .catch((error) =>
+                setSubmitState((x) => ({ ...x, error, loading: false })),
+            )
     }, [code, params, title])
 
     const filePathParts = useMemo(() => {
@@ -135,7 +137,7 @@ export function EditThisPageButton({
                         spacing='20px'
                         position='relative'
                     >
-                        {!prUrl && (
+                        {!prUrl && !submitState.error && (
                             <Fragment>
                                 <Stack flex='0 0' align='stretch'>
                                     <Stack
@@ -258,6 +260,30 @@ export function EditThisPageButton({
                                         github repo
                                     </MyLink>
                                 </Box>
+                            </Stack>
+                        )}
+                        {submitState.error && (
+                            <Stack
+                                align='center'
+                                justify='center'
+                                minHeight='400px'
+                                fontWeight='500'
+                                spacing='40px'
+                                flex='0 0'
+                            >
+                                <Box
+                                    color='red.500'
+                                    fontSize='2em'
+                                    fontWeight='600'
+                                >
+                                    Got an API error
+                                </Box>
+                                <Box as='pre' maxW='500px'>
+                                    {submitState.error?.message}
+                                </Box>
+                                <Button onClick={() => setShow(false)}>
+                                    Close
+                                </Button>
                             </Stack>
                         )}
                         {/* <EditOverly /> */}

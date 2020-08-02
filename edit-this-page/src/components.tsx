@@ -107,18 +107,21 @@ export function EditThisPageButton({
                 <Modal
                     css={css`
                         position: fixed;
+                        top: 0px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        height: auto;
+                        max-height: 100vh;
+                        max-width: 1000px;
+                        width: 100%;
+                        padding: 20px;
                         display: flex;
                         flex-direction: column;
                         align-items: stretch;
-                        top: 40px;
-                        left: 20px;
-                        right: 20px;
-                        bottom: 20px;
                         /* height: 100vh; */
                         /* padding-bottom: 20px; */
                         /* bottom: 20px; */
                         z-index: 1040;
-                        border-radius: 10px;
                         /* overflow: visible; */
                         border: none;
                         outline: none;
@@ -135,10 +138,11 @@ export function EditThisPageButton({
                 >
                     <Stack
                         color='gray.800'
-                        maxWidth='1000px'
+                        // maxWidth='1000px'
                         overflowY='auto'
-                        // minWidth='100%
-                        width={['100%', null, null, '80%']}
+                        maxWidth='100%'
+                        width='100%'
+                        // width={['100%', null, null, '80%']}
                         alignSelf='center'
                         bg='white'
                         borderRadius='10px'
@@ -288,7 +292,12 @@ export function EditThisPageButton({
                                 >
                                     Got an error
                                 </Box>
-                                <Box lineHeight='2em' textAlign='center' as='pre' maxW='500px'>
+                                <Box
+                                    lineHeight='2em'
+                                    textAlign='center'
+                                    as='pre'
+                                    maxW='500px'
+                                >
                                     {submitState.error?.message}
                                 </Box>
                                 <Button onClick={() => setShow(false)}>

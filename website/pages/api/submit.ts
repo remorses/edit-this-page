@@ -3,7 +3,12 @@ import { SubmitArgs } from 'edit-this-page/src/submit'
 import { NextApiHandler } from 'next/types'
 import _parseGithubUrl from 'parse-github-url'
 import * as uuid from 'uuid'
-import { GITHUB_TOKEN, MAX_WEEKLY_PR_COUNT, APP_NAME, PR_BODY } from '../../constants'
+import {
+    GITHUB_TOKEN,
+    MAX_WEEKLY_PR_COUNT,
+    APP_NAME,
+    PR_BODY,
+} from '../../constants'
 import { pretty, cors } from '../../support'
 import dayjs from 'dayjs'
 import memoize from 'memoizee'
@@ -56,7 +61,7 @@ const handler: NextApiHandler = async (req, res) => {
         })
 
         const { prUrl, ...prRes } = await createPr(octokit, {
-            githubUrl: forkRes.html_url,
+            githubUrl,
             branch: branchRef,
             body: PR_BODY,
             prCreator: await getMyUsername(octokit),

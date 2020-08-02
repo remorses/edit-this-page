@@ -13,11 +13,11 @@ import { GITHUB_TOKEN } from '../constants'
 import * as uuid from 'uuid'
 import dayjs from 'dayjs'
 
-const githubUrl = `https://github.com/remorses/testing-github-api`
+const githubUrl = `https://github.com/edit-this-page/testing-github-api`
 
 describe('github', () => {
     const octokit = new Octokit({ auth: GITHUB_TOKEN })
-    it('createForkAndBranch', async () => {
+    it('fork createForkAndBranch', async () => {
         const newBranchName = uuid.v4()
         const forkRes = await createForkAndBranch(octokit, {
             githubUrl,
@@ -25,7 +25,7 @@ describe('github', () => {
         })
         console.log(forkRes)
         await octokit.git.deleteRef({
-            ...parseGithubUrl(githubUrl),
+            ...parseGithubUrl(forkRes.html_url),
             ref: `heads/${newBranchName}`,
         })
     })
@@ -96,7 +96,7 @@ describe('github', () => {
         } finally {
             // depleting the branch also deletes the pr
             await octokit.git.deleteRef({
-                ...parseGithubUrl(githubUrl),
+                ...parseGithubUrl(forkRes.html_url),
                 ref: `heads/${newBranchName}`,
             })
         }

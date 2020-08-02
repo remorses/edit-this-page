@@ -103,10 +103,15 @@ export async function createForkAndBranch(
     })
     pretty(forkRes.data)
 
+    let toSleep = 1400
+    while (!(await existsRepo(octokit, { githubUrl: forkRes.data.html_url }))) {
+        console.log(`waiting fork creation`)
+        await sleep(toSleep)
+        toSleep += 1000
+    }
     console.log(`getting last commits`)
     let response = await octokit.repos.listCommits({
-        owner,
-        repo,
+        ...parseGithubUrl(forkRes.data.html_url),
         // sha: fromBranch,
         per_page: 1,
     })
@@ -114,8 +119,7 @@ export async function createForkAndBranch(
 
     console.log(`creating branch`)
     const branchRes = await octokit.git.createRef({
-        owner: forkRes.data.owner.login,
-        repo: forkRes.data.name,
+        ...parseGithubUrl(forkRes.data.html_url),
         ref: `refs/heads/${newBranchName}`,
         sha: latestCommitSha,
     })
@@ -265,8 +269,11 @@ export async function existsRepo(octokit: Octokit, { githubUrl }) {
         const res = await octokit.repos.get({
             ...parseGithubUrl(githubUrl),
         })
+        console.log('existsRepo', res.data)
         return !!res.data.url
     } catch {
         return false
     }
 }
+
+export const sleep = (t) => new Promise((res) => setTimeout(res, t))

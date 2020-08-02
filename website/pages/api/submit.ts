@@ -73,7 +73,7 @@ const handler: NextApiHandler = async (req, res) => {
         res.statusCode = 500
         res.setHeader('Content-Type', 'application/json')
         res.json({
-            error: e?.message || String(e),
+            error: 'Error creating pull request ' + e?.message || String(e),
         })
     }
 }

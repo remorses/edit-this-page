@@ -31,6 +31,7 @@ jsx
 
 export type EditThisPageButtonProps = {
     unstyled?: boolean
+    apiUrl?: string
     children?: ReactNode
 }
 
@@ -38,6 +39,7 @@ const X_PADDING = '40px'
 
 export function EditThisPageButton({
     unstyled,
+    apiUrl = API_URL,
     children = 'Edit This Page',
     ...rest
 }: EditThisPageButtonProps) {
@@ -71,6 +73,7 @@ export function EditThisPageButton({
     const onSubmit = useCallback(() => {
         setSubmitState((x) => ({ ...x, loading: true }))
         return submitCode({
+            apiUrl,
             githubUrl: params.editThisPageGitRemote,
             filePath: params.editThisPageFilePath,
             changedCode: code,

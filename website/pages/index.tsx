@@ -11,7 +11,10 @@ export default function Page(props) {
     return (
         <Wrapper>
             {/* <EditThisPageButton /> */}
-            <EditThisPageButton unstyled>
+            <EditThisPageButton
+                apiUrl='http://localhost:3000/api/submit'
+                unstyled
+            >
                 <Button variant='outline'>Edit</Button>
             </EditThisPageButton>
             <div

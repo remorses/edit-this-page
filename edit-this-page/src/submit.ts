@@ -8,9 +8,9 @@ export type SubmitArgs = {
     changedCode: string
 }
 
-export const submitCode = async (data: SubmitArgs) => {
+export const submitCode = async (data: SubmitArgs & { apiUrl: string }) => {
     // return alert(JSON.stringify(data, null, 4))
-    const r = await fetch(API_URL, {
+    const r = await fetch(data.apiUrl, {
         method: 'POST',
         headers: {
             'content-type': 'application/json',

@@ -13,7 +13,9 @@ import { GITHUB_TOKEN } from '../constants'
 import * as uuid from 'uuid'
 import dayjs from 'dayjs'
 
-const githubUrl = `https://github.com/edit-this-page/testing-github-api`
+const githubUrl = `https://github.com/remorses/testing-github-api`
+
+const botOwnedGithubUrl = `https://github.com/edit-this-page/testing-github-api`
 
 describe('github', () => {
     const octokit = new Octokit({ auth: GITHUB_TOKEN })
@@ -37,7 +39,7 @@ describe('github', () => {
     })
     it('commitFiles', async () => {
         let commitRes = await commitFiles(octokit, {
-            githubUrl,
+            githubUrl: botOwnedGithubUrl,
             message: 'another test',
             branch: 'master',
             tree: [
@@ -74,7 +76,7 @@ describe('github', () => {
         // console.log(forkRes.branchRef)
         try {
             let commitRes = await commitFiles(octokit, {
-                githubUrl,
+                githubUrl: forkRes.html_url,
                 message: 'should be on pr',
                 branch: newBranchName,
                 tree: [
@@ -86,7 +88,7 @@ describe('github', () => {
                 ],
             })
             const prRes = await createPr(octokit, {
-                githubUrl,
+                githubUrl: forkRes.html_url,
                 branch: newBranchName,
                 // prCreator: await getMyLogin(octokit),
                 title: `Still Testing pr creation`,

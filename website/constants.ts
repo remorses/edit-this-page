@@ -6,3 +6,8 @@ export const APP_URL = 'https://edit-this-page.now.sh'
 export const PR_BODY = `
 This pull request has been automatically created with ${APP_URL}
 `
+
+export const API_URL =
+    process.env.NODE_ENV === 'test'
+        ? 'http://localhost:3000/api/submit'
+        : undefined

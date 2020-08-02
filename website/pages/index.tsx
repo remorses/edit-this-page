@@ -4,6 +4,7 @@ import { css, jsx } from '@emotion/core'
 import { Link, Button } from '@chakra-ui/core'
 import { Wrapper } from 'dokz/dist'
 import { EditThisPageButton } from 'edit-this-page/src'
+import { API_URL } from '../constants'
 
 jsx
 
@@ -12,7 +13,9 @@ export default function Page(props) {
         <Wrapper>
             {/* <EditThisPageButton /> */}
             <EditThisPageButton
-                apiUrl='http://localhost:3000/api/submit'
+                apiUrl={
+                    API_URL
+                }
                 unstyled
             >
                 <Button variant='outline'>Edit</Button>

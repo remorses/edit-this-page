@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "rm -rf .next && BABEL_DISABLE_CACHE=1 next dev",
+        "dev": "rm -rf .next && NODE_ENV=test BABEL_DISABLE_CACHE=1 next dev",
         "test": "NODE_ENV=test mocha --colors --exit",
         "build": "yarn --cwd install && yarn --cwd ../ build && next build",
         "start": "next start",

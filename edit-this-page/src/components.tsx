@@ -10,7 +10,7 @@ import {
     useCallback,
     useMemo,
 } from 'react'
-import { ThemeProvider, IconButton } from '@chakra-ui/core'
+import { ThemeProvider, IconButton, Input } from '@chakra-ui/core'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
 import { Code } from './Code'
@@ -23,6 +23,8 @@ jsx
 // don't sit right on top of each other.
 
 export type EditThisPageButtonProps = { children?: ReactNode }
+
+const X_PADDING = '40px'
 
 export function EditThisPageButton(props: EditThisPageButtonProps) {
     const [params, setParams] = useState<InjectedParams>({})
@@ -82,13 +84,17 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     /* padding-bottom: 20px; */
                     /* bottom: 20px; */
                     z-index: 1040;
-                    background-color: white;
                     min-height: 200px;
-                    max-height: 100%;
-                    border-radius: 6px;
+                    border-radius: 10px;
                     overflow: hidden;
+                    border: none;
+                    overflow: auto;
+                    outline: none;
+
+                    -webkit-box-shadow: none;
+                    -moz-box-shadow: none;
+                    box-shadow: none;
                     /* overflow: hidden; */
-                    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
                 `}
                 show={show}
                 onHide={() => setShow(false)}
@@ -96,37 +102,47 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                 aria-labelledby='modal-label'
             >
                 <Stack
+                    bg='white'
+                    borderRadius='10px'
                     align='stretch'
                     // p='20px'
-                    spacing='0px'
+                    spacing='20px'
                     position='relative'
                 >
-                    <Stack align='center' direction='row' py='20px' px='20px'>
+                    <Stack align='stretch'>
                         <Stack
+                            align='center'
                             direction='row'
-                            fontSize='1.2em'
-                            fontWeight='500'
-                            spacing='8px'
+                            py='10px'
+                            px={X_PADDING}
                         >
-                            {filePathParts.slice(0, -1).map((s) => (
-                                <Fragment>
-                                    <Box opacity={0.5}>{s}</Box>
-                                    <Box opacity={0.5}>/</Box>
-                                </Fragment>
-                            ))}
-                            <Box>{filePathParts.reverse()[0]}</Box>
+                            <Stack
+                                direction='row'
+                                fontSize='1.2em'
+                                fontWeight='500'
+                                spacing='8px'
+                            >
+                                {filePathParts.slice(0, -1).map((s) => (
+                                    <Fragment>
+                                        <Box opacity={0.5}>{s}</Box>
+                                        <Box opacity={0.5}>/</Box>
+                                    </Fragment>
+                                ))}
+                                <Box>{filePathParts.reverse()[0]}</Box>
+                            </Stack>
+                            <Box flex='1' />
+                            <IconButton
+                                aria-label='close'
+                                icon='close'
+                                onClick={() => setShow(false)}
+                            />
                         </Stack>
-                        <Box flex='1' />
-                        <IconButton
-                            aria-label='close'
-                            icon='close'
-                            onClick={() => setShow(false)}
-                        />
+
+                        <Code value={code} onChange={setCode} />
                     </Stack>
 
-                    <Code value={code} onChange={setCode} />
-
-                    <Stack direction='row'>
+                    <Stack spacing='20px' px={X_PADDING}>
+                        <Input />
                         {/* <Box flex='1' /> */}
                         <Box
                             fontWeight='500'

@@ -64,6 +64,10 @@ export function EditThisPageButton({
         loading: false,
         error: null,
     })
+    const close = () => {
+        setShow(false)
+        setSubmitState((x) => ({ ...x, error: null }))
+    }
     const [prUrl, setPrUrl] = useState('')
     useEffect(() => {
         setCode(params?.editThisPageSourceCode)
@@ -135,7 +139,7 @@ export function EditThisPageButton({
                         /* overflow: hidden; */
                     `}
                     show={show}
-                    onHide={() => setShow(false)}
+                    onHide={close}
                     renderBackdrop={Backdrop}
                     aria-labelledby='modal-label'
                 >
@@ -193,7 +197,7 @@ export function EditThisPageButton({
                                         <IconButton
                                             aria-label='close'
                                             icon='close'
-                                            onClick={() => setShow(false)}
+                                            onClick={close}
                                         />
                                     </Stack>
 
@@ -303,7 +307,7 @@ export function EditThisPageButton({
                                 >
                                     {submitState.error?.message}
                                 </Box>
-                                <Button onClick={() => setShow(false)}>
+                                <Button onClick={close}>
                                     Close
                                 </Button>
                             </Stack>

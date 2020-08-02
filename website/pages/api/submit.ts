@@ -2,12 +2,13 @@ import { Octokit } from '@octokit/rest'
 import { SubmitArgs } from 'edit-this-page/src/submit'
 import { NextApiHandler } from 'next/types'
 import _parseGithubUrl from 'parse-github-url'
-import { GITHUB_TOKEN } from '../../constants'
 import * as uuid from 'uuid'
-import { pretty } from '../../support'
+import { GITHUB_TOKEN } from '../../constants'
+import { pretty, cors } from '../../support'
 
 const handler: NextApiHandler = async (req, res) => {
     try {
+        await cors(req, res)
         // throw new Error('unexpected error\n ai ai')
         const {
             filePath,

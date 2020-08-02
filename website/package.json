@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "rm -rf .next && BABEL_DISABLE_CACHE=1 next dev",
         "test": "NODE_ENV=test mocha --colors --exit",
-        "build": "next build",
+        "build": "yarn --cwd install && yarn --cwd ../ build && next build",
         "start": "next start",
         "compile": "echo skip",
         "publish": "echo skip"

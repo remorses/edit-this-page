@@ -54,10 +54,11 @@ export const babelPlugin = (
                     }
 
                     const remote = getGitConfigSync()?.remote
-                    const gitRemote =
-                        remote?.origin?.url ||
-                        remote?.[Object.keys(remote)[0]]?.url ||
-                        ''
+                    // const gitRemote =
+                    //     remote?.origin?.url ||
+                    //     remote?.[Object.keys(remote)[0]]?.url ||
+                    //     ''
+                    const gitRemote = getGitRemote()
                     if (!gitRemote) {
                         throw new Error(
                             'Cannot find git remote, git config found is ' +
@@ -121,5 +122,10 @@ export const babelPlugin = (
 
 export function getCurrentBranch() {
     const branch = execSync('git rev-parse --abbrev-ref HEAD', {})
+    return branch.toString().trim()
+}
+
+export function getGitRemote() {
+    const branch = execSync('git config --get remote.origin.url', {})
     return branch.toString().trim()
 }

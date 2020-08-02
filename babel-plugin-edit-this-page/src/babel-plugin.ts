@@ -59,12 +59,11 @@ export const babelPlugin = (
                     //     remote?.[Object.keys(remote)[0]]?.url ||
                     //     ''
                     // const gitRemote = getGitRemote()
-                    // if (!gitRemote) {
-                    //     throw new Error(
-                    //         'Cannot find git remote, git config found is ' +
-                    //             JSON.stringify(getGitConfigSync()),
-                    //     )
-                    // }
+                    if (!githubUrl) {
+                        throw new Error(
+                            'githubUrl babel option is required for "edit-this-page" plugin',
+                        )
+                    }
                     // const branch = getCurrentBranch()
                     // if (!gitRemote) {
                     //     throw new Error(

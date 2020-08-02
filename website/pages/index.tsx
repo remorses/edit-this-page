@@ -4,6 +4,7 @@ import { css, jsx } from '@emotion/core'
 import { Link, Button } from '@chakra-ui/core'
 import { Wrapper } from 'dokz/dist'
 import { EditThisPageButton } from 'edit-this-page/src'
+import { API_URL } from '../constants'
 
 jsx
 
@@ -11,7 +12,7 @@ export default function Page(props) {
     return (
         <Wrapper>
             {/* <EditThisPageButton /> */}
-            <EditThisPageButton unstyled>
+            <EditThisPageButton apiUrl={API_URL} unstyled>
                 <Button variant='outline'>Edit</Button>
             </EditThisPageButton>
             <div
@@ -24,76 +25,3 @@ export default function Page(props) {
         </Wrapper>
     )
 }
-
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx
-// jsx

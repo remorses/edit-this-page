@@ -26,7 +26,16 @@ The babel plugin is necessary to inject the source code, github repo url to be u
 ```js
 // babel.config.js
 module.exports = {
-    plugins: [['edit-this-page', { editableFiles: 'pages/**' }]],
+    plugins: [
+        [
+            'edit-this-page',
+            {
+                editableFiles: 'pages/**',
+                githubUrl: 'https://github.com/remorses/edit-this-page',
+                branch: 'master',
+            },
+        ],
+    ],
 }
 ```
 
@@ -47,17 +56,4 @@ export function Page() {
         </MyApp>
     )
 }
-```
-
-
-
-### Important notes
-
-If you build your website in a ci environment you need to have the git config available during ci
-
-Some platform like vercel ignore these files by default, to make this work with vercel you have to add the following to your `.vercelignore` file
-
-```.gitignore
-# .vercelignore
-!.git/config
 ```

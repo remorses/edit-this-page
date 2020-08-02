@@ -1,13 +1,18 @@
 const { plugin } = require('babel-plugin-edit-this-page')
 
-
-
 module.exports = {
     presets: ['next/babel'],
-    plugins: [[plugin, { editableFiles: 'pages/**' }]],
+    plugins: [
+        [
+            plugin,
+            {
+                editableFiles: 'pages/**',
+                githubUrl: 'https://github.com/remorses/edit-this-page',
+                branch: 'master',
+            },
+        ],
+    ],
 }
-
-
 
 // const { CodeGenerator } = require('@babel/generator')
 // const inspect = (babel) => {

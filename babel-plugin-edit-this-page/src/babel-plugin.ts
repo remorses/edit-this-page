@@ -23,7 +23,7 @@ export type InjectedParams = {
 
 export const babelPlugin = (
     babel: { types: typeof BabelTypes; template; parse; transformFromAstSync },
-    { editableFiles = '**' },
+    { editableFiles = '**', githubUrl = '', branch = 'master' },
 ): { visitor: Visitor<any>; inherits } => {
     const { types: t, template } = babel
 
@@ -58,27 +58,27 @@ export const babelPlugin = (
                     //     remote?.origin?.url ||
                     //     remote?.[Object.keys(remote)[0]]?.url ||
                     //     ''
-                    const gitRemote = getGitRemote()
-                    if (!gitRemote) {
-                        throw new Error(
-                            'Cannot find git remote, git config found is ' +
-                                JSON.stringify(getGitConfigSync()),
-                        )
-                    }
-                    const branch = getCurrentBranch()
-                    if (!gitRemote) {
-                        throw new Error(
-                            'Cannot find current branch, git config found is ' +
-                                JSON.stringify(getGitConfigSync()),
-                        )
-                    }
-                    if (!sourceCode) {
-                        throw new Error('no source code found for ' + filePath)
-                    }
+                    // const gitRemote = getGitRemote()
+                    // if (!gitRemote) {
+                    //     throw new Error(
+                    //         'Cannot find git remote, git config found is ' +
+                    //             JSON.stringify(getGitConfigSync()),
+                    //     )
+                    // }
+                    // const branch = getCurrentBranch()
+                    // if (!gitRemote) {
+                    //     throw new Error(
+                    //         'Cannot find current branch, git config found is ' +
+                    //             JSON.stringify(getGitConfigSync()),
+                    //     )
+                    // }
+                    // if (!sourceCode) {
+                    //     throw new Error('no source code found for ' + filePath)
+                    // }
                     // TODO add additional attributes to the button props taken from a config file, like target branch ...
                     const toInject: InjectedParams = {
                         editThisPageFilePath: relativePathToRepo,
-                        editThisPageGitRemote: gitRemote,
+                        editThisPageGitRemote: githubUrl,
                         editThisPageSourceCode: sourceCode,
                         editThisPageBranch: branch,
                     }

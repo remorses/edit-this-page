@@ -259,3 +259,14 @@ export async function getPrsCount(
     })
     return { count: res.data.total_count, ...res.data }
 }
+
+export async function existsRepo(octokit: Octokit, { githubUrl }) {
+    try {
+        const res = await octokit.repos.get({
+            ...parseGithubUrl(githubUrl),
+        })
+        return !!res.data.url
+    } catch {
+        return false
+    }
+}

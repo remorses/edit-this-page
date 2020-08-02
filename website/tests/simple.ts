@@ -5,6 +5,7 @@ import {
     getMyUsername,
     commitFiles,
     getPrsCount,
+    existsRepo,
 } from '../pages/api/submit'
 import assert from 'assert'
 import { Octokit } from '@octokit/rest'
@@ -27,6 +28,12 @@ describe('github', () => {
             ...parseGithubUrl(githubUrl),
             ref: `heads/${newBranchName}`,
         })
+    })
+    it('existsRepo', async () => {
+        var exists = await existsRepo(octokit, { githubUrl })
+        assert(exists)
+        var exists = await existsRepo(octokit, { githubUrl: 'xxxxxxxxxx' })
+        assert(!exists)
     })
     it('commitFiles', async () => {
         let commitRes = await commitFiles(octokit, {

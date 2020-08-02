@@ -4,11 +4,13 @@ import {
     createPr,
     getMyUsername,
     commitFiles,
+    getPrsCount,
 } from '../pages/api/submit'
 import assert from 'assert'
 import { Octokit } from '@octokit/rest'
 import { GITHUB_TOKEN } from '../constants'
 import * as uuid from 'uuid'
+import dayjs from 'dayjs'
 
 const githubUrl = `https://github.com/remorses/testing-github-api`
 
@@ -40,6 +42,14 @@ describe('github', () => {
             ],
         })
         console.log(commitRes)
+    })
+    it('getPrsCount', async () => {
+        const { count } = await getPrsCount(octokit, {
+            githubUrl,
+            since: dayjs().subtract(1, 'week').toDate(),
+            author: await getMyUsername(octokit),
+        })
+        console.log(count)
     })
     it('pull request', async () => {
         const newBranchName = uuid.v4()

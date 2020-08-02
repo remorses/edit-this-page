@@ -23,6 +23,7 @@
         "@types/uuid": "^8.0.0",
         "babel-plugin-edit-this-page": "*",
         "cors": "^2.8.5",
+        "dayjs": "^1.8.31",
         "dokz": "latest",
         "edit-this-page": "*",
         "next": "latest",

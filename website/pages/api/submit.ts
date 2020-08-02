@@ -3,8 +3,9 @@ import { SubmitArgs } from 'edit-this-page/src/submit'
 import { NextApiHandler } from 'next/types'
 import _parseGithubUrl from 'parse-github-url'
 import * as uuid from 'uuid'
-import { GITHUB_TOKEN } from '../../constants'
+import { GITHUB_TOKEN, MAX_WEEKLY_PR_COUNT } from '../../constants'
 import { pretty, cors } from '../../support'
+import dayjs from 'dayjs'
 
 const handler: NextApiHandler = async (req, res) => {
     // TODO rate limit edits to a repository to not get banned by github
@@ -21,6 +22,18 @@ const handler: NextApiHandler = async (req, res) => {
         }: SubmitArgs = req.body
 
         const octokit = new Octokit({ auth: GITHUB_TOKEN })
+
+        const { count } = await getPrsCount(octokit, {
+            githubUrl,
+            since: dayjs().subtract(1, 'week').toDate(),
+            author: await getMyUsername(octokit),
+        })
+
+        if (count > MAX_WEEKLY_PR_COUNT) {
+            throw new Error(
+                'max number of prs opened already reached in this week,\nlimit is set to ${MAX_WEEKLY_PR_COUNT}, value is ${count}',
+            )
+        }
 
         const newBranchName = uuid.v4()
 
@@ -216,4 +229,28 @@ export async function commitFiles(
     console.log(
         `new commit available at 'https://github.com/${owner}/${repo}/commit/${newCommitSha}'`,
     )
+}
+
+export async function getPrsCount(
+    octokit: Octokit,
+    {
+        githubUrl,
+        author,
+        since,
+    }: {
+        githubUrl: string
+        author?: string
+        since: Date
+    },
+) {
+    const q = [`type:pr+author:${author}`]
+    if (author) {
+        q.push(`created:>=${since.toISOString().split('T')[0]}`)
+    }
+    const res = await octokit.search.issuesAndPullRequests({
+        ...parseGithubUrl(githubUrl),
+        q: q.join('+'),
+        per_page: 40,
+    })
+    return { count: res.data.total_count, ...res.data }
 }

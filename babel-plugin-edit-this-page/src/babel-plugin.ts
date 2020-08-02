@@ -53,7 +53,7 @@ export const babelPlugin = (
                         return
                     }
 
-                    const remote = getGitConfigSync()?.remote
+                    // const remote = getGitConfigSync()?.remote
                     // const gitRemote =
                     //     remote?.origin?.url ||
                     //     remote?.[Object.keys(remote)[0]]?.url ||
@@ -121,11 +121,15 @@ export const babelPlugin = (
 }
 
 export function getCurrentBranch() {
-    const branch = execSync('git rev-parse --abbrev-ref HEAD', {})
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', {
+        stdio: 'inherit',
+    })
     return branch.toString().trim()
 }
 
 export function getGitRemote() {
-    const branch = execSync('git config --get remote.origin.url', {})
+    const branch = execSync('git config --get remote.origin.url', {
+        stdio: 'inherit',
+    })
     return branch.toString().trim()
 }

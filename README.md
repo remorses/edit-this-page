@@ -50,3 +50,14 @@ export function Page() {
 ```
 
 
+
+### Important notes
+
+If you build your website in a ci environment you need to have the git config available during ci
+
+Some platform like vercel ignore these files by default, to make this work with vercel you have to add the following to your `.vercelignore` file
+
+```
+# .vercelignore
+!.git/config
+```

@@ -10,7 +10,7 @@ import {
     useCallback,
     useMemo,
 } from 'react'
-import { ThemeProvider } from '@chakra-ui/core'
+import { ThemeProvider, IconButton } from '@chakra-ui/core'
 import Modal from 'react-overlays/Modal'
 import { InjectedParams } from './babel-plugin'
 import { Code } from './Code'
@@ -86,7 +86,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     min-height: 200px;
                     max-height: 100%;
                     border-radius: 6px;
-                    overflow-y: auto;
+                    overflow: hidden;
                     /* overflow: hidden; */
                     box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
                 `}
@@ -101,11 +101,11 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                     spacing='0px'
                     position='relative'
                 >
-                    <Stack py='20px' px='20px'>
+                    <Stack align='center' direction='row' py='20px' px='20px'>
                         <Stack
                             direction='row'
                             fontSize='1.2em'
-                            fontWeight='600'
+                            fontWeight='500'
                             spacing='8px'
                         >
                             {filePathParts.slice(0, -1).map((s) => (
@@ -116,9 +116,15 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                             ))}
                             <Box>{filePathParts.reverse()[0]}</Box>
                         </Stack>
+                        <Box flex='1' />
+                        <IconButton
+                            aria-label='close'
+                            icon='close'
+                            onClick={() => setShow(false)}
+                        />
                     </Stack>
 
-                    <Code borderWidth='1px' value={code} onChange={setCode} />
+                    <Code value={code} onChange={setCode} />
 
                     <Stack direction='row'>
                         {/* <Box flex='1' /> */}

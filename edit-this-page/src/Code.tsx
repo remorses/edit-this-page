@@ -41,7 +41,7 @@ export const Code = ({
                             // spacing='0'
                             // p='20px'
                             // pt='30px'
-                            borderRadius='8px'
+                            // borderRadius='8px'
                             as='pre'
                             fontFamily={CODE_FONT}
                             // fontSize='0.9em'
@@ -50,7 +50,7 @@ export const Code = ({
                             fontWeight='500'
                             className={className}
                             style={style}
-                            {...rest}
+                            // {...rest}
                         >
                             {tokens.map((line, i) => (
                                 <div
@@ -91,7 +91,7 @@ export const Code = ({
             overflowX='auto'
             bg='gray.50'
             align='stretch'
-            borderRadius='8px'
+            // borderRadius='8px'
             css={css`
                 textarea {
                     border: none;
@@ -115,7 +115,7 @@ export const Code = ({
                     whiteSpace: 'pre',
                     width: '100%',
                     // overflowX: 'auto',
-                    margin: '-60px 0',
+                    margin: '-40px 0',
                     fontFamily: CODE_FONT,
                     ...style,
                 }}

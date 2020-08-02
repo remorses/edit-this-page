@@ -22,7 +22,7 @@ import Modal from 'react-overlays/Modal'
 import { InjectedParams } from 'babel-plugin-edit-this-page'
 import { Code } from './Code'
 import { submitCode } from './submit'
-import { API_URL, GITHUB_REPO } from './constants'
+import { API_URL, GITHUB_REPO, HANDLE_EDITS_GUIDE_URL } from './constants'
 
 jsx
 
@@ -43,7 +43,17 @@ export function EditThisPageButton({
 }: EditThisPageButtonProps) {
     const [params, setParams] = useState<InjectedParams>({})
     useEffect(() => {
-        setParams(getParams())
+        const params = getParams()
+        if (!params) {
+            setSubmitState((x) => ({
+                ...x,
+                error: new Error(
+                    `The repository is not configured to handle edits\nThe developer needs to follow the guide at\n${HANDLE_EDITS_GUIDE_URL}`,
+                ),
+            }))
+            return
+        }
+        setParams(params)
     }, [])
     const [show, setShow] = useState(false)
     const [title, setTitle] = useState('')
@@ -276,9 +286,9 @@ export function EditThisPageButton({
                                     fontSize='2em'
                                     fontWeight='600'
                                 >
-                                    Got an API error
+                                    Got an error
                                 </Box>
-                                <Box as='pre' maxW='500px'>
+                                <Box lineHeight='2em' textAlign='center' as='pre' maxW='500px'>
                                     {submitState.error?.message}
                                 </Box>
                                 <Button onClick={() => setShow(false)}>
@@ -312,7 +322,7 @@ const Backdrop = (props) => (
 
 function getParams(): InjectedParams {
     if (typeof window === undefined) {
-        return {}
+        return
     } else {
         const keys: Array<keyof InjectedParams> = [
             'editThisPageFilePath',
@@ -320,7 +330,11 @@ function getParams(): InjectedParams {
             'editThisPageBranch',
             'editThisPageSourceCode',
         ]
-        return pick(window as {}, keys)
+        const picked = pick(window as {}, keys)
+        if (Object.keys(picked).length === 0) {
+            return
+        }
+        return picked
     }
 }
 

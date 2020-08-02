@@ -4,7 +4,7 @@ const { plugin } = require('babel-plugin-edit-this-page')
 
 module.exports = {
     presets: ['next/babel'],
-    plugins: [[plugin, { editableFiles: 'pages/**' }]],
+    plugins: [[plugin, { editableFiles: 'pages/' }]],
 }
 
 

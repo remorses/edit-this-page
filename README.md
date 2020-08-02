@@ -13,13 +13,13 @@
 
 Import a button on your page to make any website editable, the button opens an overlay code editor that let you make changes and submit a pull request on github
 
-1. Install
+### 1. Install
 
 ```
 yarn add edit-this-page babel-plugin-edit-this-page @emotion/core @chakra-ui/core
 ```
 
-2. Add the babel plugin
+### 2. Add the babel plugin
 
 The babel plugin is necessary to inject the source code, github repo url to be used by the react component
 
@@ -30,7 +30,7 @@ module.exports = {
 }
 ```
 
-3. Use the react component
+### 3. Use the react component
 
 The react component will open a modal to edit your page contents
 

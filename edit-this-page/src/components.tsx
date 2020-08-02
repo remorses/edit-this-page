@@ -157,11 +157,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                         <Code value={code} onChange={setCode} />
                     </Stack>
 
-                    <Stack
-                        flex='0 0'
-                        spacing='40px'
-                        px={X_PADDING}
-                    >
+                    <Stack flex='0 0' spacing='40px' px={X_PADDING}>
                         <Stack width='100%' spacing='10px' align='stretch'>
                             <Box fontWeight='500'>Title</Box>
                             <Input
@@ -176,8 +172,16 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                         <Box>
                             A bot will open a pull request on github with the
                             changes made <br />
-                            You can login with your github profile if you want
-                            to open the pr with your account
+                            You can{' '}
+                            <Box
+                                cursor='pointer'
+                                color='blue.500'
+                                d='inline'
+                                mx='0.2em'
+                            >
+                                login with your github profile
+                            </Box>
+                            if you want to open the pr with your account
                         </Box>
                         <Button
                             fontWeight='600'

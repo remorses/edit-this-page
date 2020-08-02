@@ -33,6 +33,7 @@ export const babelPlugin = (
             Program: {
                 enter(p, state) {
                     const sourceCode: string = state.file.code
+
                     const filePath = state.file.opts.filename || ''
                     const root = getRepoRoot()
                     if (!root) {
@@ -51,13 +52,27 @@ export const babelPlugin = (
                         return
                     }
 
-                    const remote = getGitConfigSync('.')?.remote
+                    const remote = getGitConfigSync()?.remote
                     const gitRemote =
                         remote?.origin?.url ||
                         remote?.[Object.keys(remote)[0]]?.url ||
                         ''
+                    if (!gitRemote) {
+                        throw new Error(
+                            'Cannot find git remote, git config found is ' +
+                                JSON.stringify(getGitConfigSync()),
+                        )
+                    }
                     const branch = getCurrentBranch()
-
+                    if (!gitRemote) {
+                        throw new Error(
+                            'Cannot find current branch, git config found is ' +
+                                JSON.stringify(getGitConfigSync()),
+                        )
+                    }
+                    if (!sourceCode) {
+                        throw new Error('no source code found for ' + filePath)
+                    }
                     // TODO add additional attributes to the button props taken from a config file, like target branch ...
                     const toInject: InjectedParams = {
                         editThisPageFilePath: relativePathToRepo,
@@ -66,11 +81,17 @@ export const babelPlugin = (
                         editThisPageBranch: branch,
                     }
 
+                    console.log(
+                        `injecting variables to window: ${JSON.stringify(
+                            toInject,
+                            null,
+                            4,
+                        )}`,
+                    )
+
                     // babel source code is the transformed markdown, we need the original source code
                     // console.log(path.extname(filePath))
-                    if (
-                        ['.md', '.mdx'].includes(path.extname(filePath))
-                    ) {
+                    if (['.md', '.mdx'].includes(path.extname(filePath))) {
                         toInject.editThisPageSourceCode = fs
                             .readFileSync(filePath)
                             .toString()

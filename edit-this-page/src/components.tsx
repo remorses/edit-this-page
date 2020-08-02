@@ -129,6 +129,7 @@ export function EditThisPageButton(props: EditThisPageButtonProps) {
                             direction='row'
                             py='10px'
                             px={X_PADDING}
+                            zIndex={4}
                         >
                             <Stack
                                 direction='row'

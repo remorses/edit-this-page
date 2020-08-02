@@ -3,7 +3,7 @@ import { SubmitArgs } from 'edit-this-page/src/submit'
 import { NextApiHandler } from 'next/types'
 import _parseGithubUrl from 'parse-github-url'
 import * as uuid from 'uuid'
-import { GITHUB_TOKEN, MAX_WEEKLY_PR_COUNT } from '../../constants'
+import { GITHUB_TOKEN, MAX_WEEKLY_PR_COUNT, APP_NAME } from '../../constants'
 import { pretty, cors } from '../../support'
 import dayjs from 'dayjs'
 import memoize from 'memoizee'
@@ -35,7 +35,7 @@ const handler: NextApiHandler = async (req, res) => {
             )
         }
 
-        const newBranchName = uuid.v4()
+        const newBranchName = `${APP_NAME}-${uuid.v4().slice(0, 8)}`
 
         const { branchRef, ...forkRes } = await createForkAndBranch(octokit, {
             githubUrl,
@@ -44,7 +44,7 @@ const handler: NextApiHandler = async (req, res) => {
 
         let commitRes = await commitFiles(octokit, {
             githubUrl: forkRes.html_url,
-            message: `Edited '${filePath}' via 'edit-this-page'`,
+            message: title,
             branch: newBranchName,
             tree: [
                 {

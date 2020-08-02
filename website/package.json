@@ -3,8 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "rm -rf .next && TESTING_EDIT_THIS_PAGE=1 BABEL_DISABLE_CACHE=1 next dev",
-        "test": "TESTING_EDIT_THIS_PAGE=1 NODE_ENV=test mocha --colors --exit",
+        "dev": "rm -rf .next && BABEL_DISABLE_CACHE=1 next dev",
+        "test": "NODE_ENV=test mocha --colors --exit",
         "build": "yarn --cwd install && yarn --cwd ../ build && next build",
         "start": "next start",
         "compile": "echo skip",

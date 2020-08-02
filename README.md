@@ -23,6 +23,13 @@ yarn add edit-this-page babel-plugin-edit-this-page @emotion/core @chakra-ui/cor
 
 The babel plugin is necessary to inject the source code, github repo url to be used by the react component
 
+```js
+// babel.config.js
+module.exports = {
+    plugins: [['edit-this-page', { editableFiles: 'pages/**' }]],
+}
+```
+
 3. Use the react component
 
 The react component will open a modal to edit your page contents

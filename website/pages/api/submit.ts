@@ -51,6 +51,8 @@ const handler: NextApiHandler = async (req, res) => {
             githubUrl: forkRes.html_url,
             message: title || `Changes by ${APP_NAME}`,
             branch: newBranchName,
+            lastCommitFromGithubUrl: githubUrl,
+            baseBranch: baseBranch,
             tree: [
                 {
                     path: filePath,
@@ -106,7 +108,7 @@ export async function createForkAndBranch(
         owner,
         repo,
     })
-    pretty(forkRes.data)
+    // pretty(forkRes.data)
 
     let toSleep = 1400
     while (!(await existsRepo(octokit, { githubUrl: forkRes.data.html_url }))) {
@@ -187,10 +189,14 @@ export async function commitFiles(
         githubUrl,
         tree,
         branch,
+        baseBranch,
         message,
+        lastCommitFromGithubUrl,
     }: {
         githubUrl
+        baseBranch?: string
         branch
+        lastCommitFromGithubUrl?: string
         tree: { path; mode: '100644'; content }[] // mode '100644',
         message
     },
@@ -198,9 +204,8 @@ export async function commitFiles(
     const { owner, repo } = parseGithubUrl(githubUrl)
     console.log('getting latest commit sha & treeSha')
     let response = await octokit.repos.listCommits({
-        owner,
-        repo,
-        sha: branch,
+        ...parseGithubUrl(lastCommitFromGithubUrl || githubUrl),
+        sha: baseBranch || branch,
         per_page: 1,
     })
     const latestCommitSha = response.data[0].sha
@@ -208,6 +213,7 @@ export async function commitFiles(
     // console.log(`commit sha: ${latestCommitSha}, tree sha: ${treeSha}`)
 
     console.log('creating tree')
+    // TODO creating the tree from the last commit of the fork will start the pr from older commit
     const treeResponse = await octokit.git.createTree({
         owner,
         repo,
@@ -274,7 +280,7 @@ export async function existsRepo(octokit: Octokit, { githubUrl }) {
         const res = await octokit.repos.get({
             ...parseGithubUrl(githubUrl),
         })
-        console.log('existsRepo', res.data)
+        // console.log('existsRepo', res.data)
         return !!res.data.url
     } catch {
         return false

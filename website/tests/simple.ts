@@ -67,7 +67,7 @@ describe('github', () => {
         assert(x)
         console.log(x)
     })
-    it('pull request', async () => {
+    it('pull request createPr', async () => {
         const newBranchName = uuid.v4()
         const forkRes = await createForkAndBranch(octokit, {
             githubUrl,
@@ -78,7 +78,9 @@ describe('github', () => {
             let commitRes = await commitFiles(octokit, {
                 githubUrl: forkRes.html_url,
                 message: 'should be on pr',
+                baseBranch: 'master',
                 branch: newBranchName,
+                lastCommitFromGithubUrl: githubUrl,
                 tree: [
                     {
                         path: 'another.js',
@@ -88,13 +90,14 @@ describe('github', () => {
                 ],
             })
             const prRes = await createPr(octokit, {
-                githubUrl: forkRes.html_url,
+                githubUrl: githubUrl,
                 branch: newBranchName,
-                // prCreator: await getMyLogin(octokit),
+                prCreator: await getMyUsername(octokit),
                 title: `Still Testing pr creation`,
                 baseBranch: 'master',
             })
-            console.log(prRes)
+            console.log(prRes.prUrl)
+            // console.log(prRes)
         } finally {
             // depleting the branch also deletes the pr
             await octokit.git.deleteRef({

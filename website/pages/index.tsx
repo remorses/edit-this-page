@@ -1,7 +1,7 @@
 /** @jsx jsx */
 
 import { css, jsx } from '@emotion/core'
-import { Link, Button } from '@chakra-ui/core'
+import { Link, Button, useColorMode } from '@chakra-ui/core'
 import { Wrapper } from 'dokz/dist'
 import { EditThisPageButton } from 'edit-this-page/src'
 import { API_URL } from '../constants'
@@ -9,11 +9,12 @@ import { API_URL } from '../constants'
 jsx
 
 export default function Page(props) {
+    const { colorMode } = useColorMode()
     return (
         <Wrapper>
             {/* <EditThisPageButton /> */}
-            <EditThisPageButton apiUrl={API_URL} unstyled>
-                <Button variant='outline'>Edit</Button>
+            <EditThisPageButton dark={true} apiUrl={API_URL} unstyled>
+                <Button>Edit</Button>
             </EditThisPageButton>
             <div
                 css={css`

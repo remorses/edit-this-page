@@ -39,6 +39,7 @@ const X_PADDING = '40px'
 
 export function EditThisPageButton({
     unstyled,
+    dark,
     apiUrl = API_URL,
     children = 'Edit This Page',
     ...rest
@@ -101,17 +102,17 @@ export function EditThisPageButton({
 
     return (
         <ThemeProvider>
+            {!unstyled && (
+                <Button onClick={() => setShow(true)} {...rest}>
+                    {children}
+                </Button>
+            )}
+            {unstyled && (
+                <Box onClick={() => setShow(true)} {...rest}>
+                    {children}
+                </Box>
+            )}
             <LightMode>
-                {!unstyled && (
-                    <Button onClick={() => setShow(true)} {...rest}>
-                        {children}
-                    </Button>
-                )}
-                {unstyled && (
-                    <Box onClick={() => setShow(true)} {...rest}>
-                        {children}
-                    </Box>
-                )}
                 <Modal
                     css={css`
                         position: fixed;

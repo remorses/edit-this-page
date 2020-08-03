@@ -62,6 +62,7 @@ const handler: NextApiHandler = async (req, res) => {
             ],
         })
 
+        // TODO the pr tries to merge inside the last commit branch, 
         const { prUrl, ...prRes } = await createPr(octokit, {
             githubUrl,
             branch: branchRes.data.ref,

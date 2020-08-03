@@ -25,6 +25,7 @@ const handler: NextApiHandler = async (req, res) => {
             githubUrl,
             baseBranch,
             title,
+            body,
         }: SubmitArgs = req.body
 
         const octokit = await authenticateApp({ githubUrl })
@@ -64,7 +65,7 @@ const handler: NextApiHandler = async (req, res) => {
         const { prUrl, ...prRes } = await createPr(octokit, {
             githubUrl,
             branch: branchRes.data.ref,
-            body: PR_BODY,
+            body: `${body || ''}\n\n${PR_BODY}`,
             // prCreator: await getGithubAppName(),
             title: title || `Changes for '${filePath}'`,
             baseBranch,

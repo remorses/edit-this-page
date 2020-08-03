@@ -13,7 +13,7 @@ export default function Page(props) {
     return (
         <Wrapper>
             {/* <EditThisPageButton /> */}
-            <EditThisPageButton dark={true} apiUrl={API_URL} unstyled>
+            <EditThisPageButton apiUrl={API_URL} unstyled>
                 <Button>Edit</Button>
             </EditThisPageButton>
             <div

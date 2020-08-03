@@ -65,7 +65,7 @@ const handler: NextApiHandler = async (req, res) => {
             githubUrl,
             branch: branchRes.data.ref,
             body: PR_BODY,
-            prCreator: await getMyUsername(octokit),
+            // prCreator: await getGithubAppName(),
             title: title || `Changes for '${filePath}'`,
             baseBranch,
         })

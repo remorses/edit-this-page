@@ -1,14 +1,16 @@
 import assert from 'assert'
 import * as uuid from 'uuid'
-import { authenticateApp, deleteBranch } from '../github'
+import {
+    authenticateApp,
+    deleteBranch,
+    getAppOctokit,
+    getGithubAppName,
+} from '../github'
 import {
     commitFiles,
-
-
-    createBranch, createPr,
-
-
-    getPrsCount
+    createBranch,
+    createPr,
+    getPrsCount,
 } from '../pages/api/submit'
 
 const githubUrl = `https://github.com/remorses/testing-github-api`
@@ -16,7 +18,18 @@ const githubUrl = `https://github.com/remorses/testing-github-api`
 describe('github app', () => {
     it('app authenticates', async () => {
         const octokit = await authenticateApp({ githubUrl })
-        assert(await getPrsCount(octokit, { githubUrl, author: 'remorses' }))
+    })
+    it('app prs count', async () => {
+        const octokit = await authenticateApp({ githubUrl })
+        const { count } = await getPrsCount(octokit, {
+            githubUrl,
+            author: `app/${await getGithubAppName()}`,
+        })
+        assert(typeof count === 'number')
+    })
+    it('app gets its name', async () => {
+        console.log(await getGithubAppName())
+        assert(await getGithubAppName())
     })
     it('app creates pr', async () => {
         const octokit = await authenticateApp({ githubUrl })

@@ -5,7 +5,7 @@ import { APP_ID, PRIVATE_KEY } from './constants'
 import memoizee from 'memoizee'
 const { createAppAuth } = require('@octokit/auth-app')
 
-export const getOctokit = memoizee(
+export const getAppOctokit = memoizee(
     () =>
         new Octokit({
             authStrategy: createAppAuth,
@@ -17,7 +17,7 @@ export const getOctokit = memoizee(
 )
 
 export async function authenticateApp({ githubUrl }): Promise<Octokit> {
-    const appOctokit = getOctokit()
+    const appOctokit = getAppOctokit()
     const installationRes = await appOctokit.apps.getRepoInstallation({
         ...parseGithubUrl(githubUrl),
     })
@@ -36,3 +36,14 @@ export async function deleteBranch(octokit: Octokit, { githubUrl, name }) {
         ref: `heads/${name}`,
     })
 }
+
+export const getGithubAppName = memoizee(
+    async () => {
+        const octokit = getAppOctokit()
+        // console.log(octokit.auth)
+        const res = await octokit.apps.getAuthenticated({})
+        // console.log(res.data)
+        return res.data.slug
+    },
+    { promise: true },
+)

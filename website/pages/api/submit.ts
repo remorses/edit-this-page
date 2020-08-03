@@ -12,7 +12,7 @@ import {
 import { pretty, cors } from '../../support'
 import dayjs from 'dayjs'
 import memoize from 'memoizee'
-import { authenticateApp } from '../../github'
+import { authenticateApp, getGithubAppName } from '../../github'
 
 const handler: NextApiHandler = async (req, res) => {
     // TODO only certain hosts can make more than N edits, people can pay to get more edits
@@ -32,7 +32,7 @@ const handler: NextApiHandler = async (req, res) => {
         const { count } = await getPrsCount(octokit, {
             githubUrl,
             since: dayjs().subtract(1, 'week').toDate(),
-            author: await getMyUsername(octokit),
+            author: `app/${await getGithubAppName()}`,
         })
 
         if (count > MAX_WEEKLY_PR_COUNT) {
@@ -281,6 +281,7 @@ export async function getPrsCount(
     }
     const q = qParts.join('+')
     // console.log(q)
+    console.log(`getting prs count for ${githubUrl}`)
     const res = await octokit.search.issuesAndPullRequests({
         ...parseGithubUrl(githubUrl),
         q,

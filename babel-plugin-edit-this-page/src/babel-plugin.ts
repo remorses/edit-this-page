@@ -12,7 +12,7 @@ export type PluginOptions = {
     values: { value: string; newValue: string; literal?: boolean }[]
 }
 
-const debug = console.log
+const debug = process.env.NODE_ENV === 'test' ? console.log : (x) => ''
 
 export type InjectedParams = {
     editThisPageFilePath?: string
@@ -82,7 +82,7 @@ export const babelPlugin = (
                         editThisPageBranch: branch,
                     }
 
-                    console.log(
+                    debug(
                         `injecting variables to window: ${JSON.stringify(
                             toInject,
                             null,

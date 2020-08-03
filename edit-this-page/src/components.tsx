@@ -61,6 +61,7 @@ export function EditThisPageButton({
     const [show, setShow] = useState(false)
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
+    const [prUrl, setPrUrl] = useState('')
     const [code, setCode] = useState(params?.editThisPageSourceCode || '')
     const [submitState, setSubmitState] = useState({
         loading: false,
@@ -68,10 +69,10 @@ export function EditThisPageButton({
     })
     const close = () => {
         setShow(false)
+        setPrUrl('')
         setCode(params.editThisPageSourceCode)
-        setSubmitState((x) => ({ ...x, error: null }))
+        setSubmitState((x) => ({ ...x, error: null, loading: false }))
     }
-    const [prUrl, setPrUrl] = useState('')
     useEffect(() => {
         setCode(params?.editThisPageSourceCode)
         setTitle(`Changes to ${params?.editThisPageFilePath}`)

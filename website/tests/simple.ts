@@ -1,11 +1,11 @@
 import {
-    createForkAndBranch,
     parseGithubUrl,
     createPr,
     getMyUsername,
     commitFiles,
     getPrsCount,
     existsRepo,
+    createBranch,
 } from '../pages/api/submit'
 import assert from 'assert'
 import { Octokit } from '@octokit/rest'
@@ -17,20 +17,20 @@ const githubUrl = `https://github.com/remorses/testing-github-api`
 
 const botOwnedGithubUrl = `https://github.com/edit-this-page/testing-github-api`
 
-describe('github', () => {
+describe('bot github operations', () => {
     const octokit = new Octokit({ auth: GITHUB_TOKEN })
-    it('fork createForkAndBranch', async () => {
-        const newBranchName = uuid.v4()
-        const forkRes = await createForkAndBranch(octokit, {
-            githubUrl,
-            newBranchName,
-        })
-        console.log(forkRes)
-        await octokit.git.deleteRef({
-            ...parseGithubUrl(forkRes.html_url),
-            ref: `heads/${newBranchName}`,
-        })
-    })
+    // it('fork createForkAndBranch', async () => {
+    //     const newBranchName = uuid.v4()
+    //     const forkRes = await createForkAndBranch(octokit, {
+    //         githubUrl,
+    //         newBranchName,
+    //     })
+    //     console.log(forkRes)
+    //     await octokit.git.deleteRef({
+    //         ...parseGithubUrl(forkRes.html_url),
+    //         ref: `heads/${newBranchName}`,
+    //     })
+    // })
     it('existsRepo', async () => {
         var exists = await existsRepo(octokit, { githubUrl })
         assert(exists)
@@ -69,18 +69,16 @@ describe('github', () => {
     })
     it('pull request createPr', async () => {
         const newBranchName = uuid.v4()
-        const forkRes = await createForkAndBranch(octokit, {
-            githubUrl,
-            newBranchName,
+        await createBranch(octokit, {
+            githubUrl: botOwnedGithubUrl,
+            name: newBranchName,
         })
         // console.log(forkRes.branchRef)
         try {
             let commitRes = await commitFiles(octokit, {
-                githubUrl: forkRes.html_url,
+                githubUrl: botOwnedGithubUrl,
                 message: 'should be on pr',
-                baseBranch: 'master',
                 branch: newBranchName,
-                lastCommitFromGithubUrl: githubUrl,
                 tree: [
                     {
                         path: 'another.js',
@@ -90,7 +88,7 @@ describe('github', () => {
                 ],
             })
             const prRes = await createPr(octokit, {
-                githubUrl: githubUrl,
+                githubUrl: botOwnedGithubUrl,
                 branch: newBranchName,
                 prCreator: await getMyUsername(octokit),
                 title: `Still Testing pr creation`,
@@ -101,7 +99,7 @@ describe('github', () => {
         } finally {
             // depleting the branch also deletes the pr
             await octokit.git.deleteRef({
-                ...parseGithubUrl(forkRes.html_url),
+                ...parseGithubUrl(botOwnedGithubUrl),
                 ref: `heads/${newBranchName}`,
             })
         }

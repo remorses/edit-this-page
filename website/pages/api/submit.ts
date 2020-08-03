@@ -12,6 +12,7 @@ import {
 import { pretty, cors } from '../../support'
 import dayjs from 'dayjs'
 import memoize from 'memoizee'
+import { authenticateApp } from '../../github'
 
 const handler: NextApiHandler = async (req, res) => {
     // TODO only certain hosts can make more than N edits, people can pay to get more edits
@@ -26,7 +27,7 @@ const handler: NextApiHandler = async (req, res) => {
             title,
         }: SubmitArgs = req.body
 
-        const octokit = new Octokit({ auth: GITHUB_TOKEN })
+        const octokit = await authenticateApp({ githubUrl })
 
         const { count } = await getPrsCount(octokit, {
             githubUrl,
@@ -40,19 +41,17 @@ const handler: NextApiHandler = async (req, res) => {
             )
         }
 
-        const newBranchName = `${APP_NAME}-${uuid.v4().slice(0, 8)}`
+        const newBranchName = `${APP_NAME}/${uuid.v4().slice(0, 8)}`
 
-        const { branchRef, ...forkRes } = await createForkAndBranch(octokit, {
+        const branchRes = await createBranch(octokit, {
             githubUrl,
-            newBranchName,
+            name: newBranchName,
         })
 
         let commitRes = await commitFiles(octokit, {
-            githubUrl: forkRes.html_url,
+            githubUrl,
             message: title || `Changes by ${APP_NAME}`,
             branch: newBranchName,
-            lastCommitFromGithubUrl: githubUrl,
-            baseBranch: baseBranch,
             tree: [
                 {
                     path: filePath,
@@ -64,7 +63,7 @@ const handler: NextApiHandler = async (req, res) => {
 
         const { prUrl, ...prRes } = await createPr(octokit, {
             githubUrl,
-            branch: branchRef,
+            branch: branchRes.data.ref,
             body: PR_BODY,
             prCreator: await getMyUsername(octokit),
             title: title || `Changes for '${filePath}'`,
@@ -97,10 +96,18 @@ export const getMyUsername = memoize(
     },
 )
 
-export async function createForkAndBranch(
-    octokit: Octokit,
-    { githubUrl, newBranchName },
-) {
+// export async function createForkAndBranch(
+//     octokit: Octokit,
+//     { githubUrl, newBracnhName },
+// ) {
+//     const forkRes = await createFork(octokit, { githubUrl })
+//     return await createBranch(octokit, {
+//         githubUrl: forkRes.data.html_url,
+//         name: newBracnhName,
+//     })
+// }
+
+export async function createFork(octokit: Octokit, { githubUrl }) {
     const { owner, repo } = parseGithubUrl(githubUrl)
 
     console.log(`creating fork`)
@@ -116,9 +123,14 @@ export async function createForkAndBranch(
         await sleep(toSleep)
         toSleep += 1000
     }
+
+    return forkRes
+}
+
+export async function createBranch(octokit: Octokit, { githubUrl, name }) {
     console.log(`getting last commits`)
     let response = await octokit.repos.listCommits({
-        ...parseGithubUrl(forkRes.data.html_url),
+        ...parseGithubUrl(githubUrl),
         // sha: fromBranch,
         per_page: 1,
     })
@@ -126,12 +138,11 @@ export async function createForkAndBranch(
 
     console.log(`creating branch`)
     const branchRes = await octokit.git.createRef({
-        ...parseGithubUrl(forkRes.data.html_url),
-        ref: `refs/heads/${newBranchName}`,
+        ...parseGithubUrl(githubUrl),
+        ref: `refs/heads/${name}`,
         sha: latestCommitSha,
     })
-
-    return { ...forkRes.data, branchRef: branchRes.data.ref }
+    return branchRes
 }
 
 export async function createPr(
@@ -189,14 +200,12 @@ export async function commitFiles(
         githubUrl,
         tree,
         branch,
-        baseBranch,
         message,
-        lastCommitFromGithubUrl,
     }: {
         githubUrl
-        baseBranch?: string
+        // baseBranch?: string
         branch
-        lastCommitFromGithubUrl?: string
+        // lastCommitFromGithubUrl?: string
         tree: { path; mode: '100644'; content }[] // mode '100644',
         message
     },
@@ -204,8 +213,9 @@ export async function commitFiles(
     const { owner, repo } = parseGithubUrl(githubUrl)
     console.log('getting latest commit sha & treeSha')
     let response = await octokit.repos.listCommits({
-        ...parseGithubUrl(lastCommitFromGithubUrl || githubUrl),
-        sha: baseBranch || branch,
+        // TODO not sure all this is necessary, maybe github handle this
+        ...parseGithubUrl(githubUrl),
+        sha: branch,
         per_page: 1,
     })
     const latestCommitSha = response.data[0].sha
@@ -213,7 +223,6 @@ export async function commitFiles(
     // console.log(`commit sha: ${latestCommitSha}, tree sha: ${treeSha}`)
 
     console.log('creating tree')
-    // TODO creating the tree from the last commit of the fork will start the pr from older commit
     const treeResponse = await octokit.git.createTree({
         owner,
         repo,
@@ -260,16 +269,21 @@ export async function getPrsCount(
     }: {
         githubUrl: string
         author?: string
-        since: Date
+        since?: Date
     },
 ) {
-    const q = [`type:pr+author:${author}`]
-    if (author) {
-        q.push(`created:>=${since.toISOString().split('T')[0]}`)
+    const qParts = [`is:pr`]
+    if (since) {
+        qParts.push(`created:>=${since.toISOString().split('T')[0]}`)
     }
+    if (author) {
+        qParts.push(`author:${author}`)
+    }
+    const q = qParts.join('+')
+    // console.log(q)
     const res = await octokit.search.issuesAndPullRequests({
         ...parseGithubUrl(githubUrl),
-        q: q.join('+'),
+        q,
         per_page: 40,
     })
     return { count: res.data.total_count, ...res.data }

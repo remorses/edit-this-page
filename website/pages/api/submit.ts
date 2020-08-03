@@ -46,6 +46,7 @@ const handler: NextApiHandler = async (req, res) => {
 
         const branchRes = await createBranch(octokit, {
             githubUrl,
+            fromBranch: baseBranch,
             name: newBranchName,
         })
 
@@ -62,7 +63,7 @@ const handler: NextApiHandler = async (req, res) => {
             ],
         })
 
-        // TODO the pr tries to merge inside the last commit branch, 
+        // TODO the pr tries to merge inside the last commit branch,
         const { prUrl, ...prRes } = await createPr(octokit, {
             githubUrl,
             branch: branchRes.data.ref,
@@ -131,11 +132,14 @@ export async function createFork(octokit: Octokit, { githubUrl }) {
     return forkRes
 }
 
-export async function createBranch(octokit: Octokit, { githubUrl, name }) {
+export async function createBranch(
+    octokit: Octokit,
+    { githubUrl, name, fromBranch },
+) {
     console.log(`getting last commits`)
     let response = await octokit.repos.listCommits({
         ...parseGithubUrl(githubUrl),
-        // sha: fromBranch,
+        sha: fromBranch,
         per_page: 1,
     })
     const latestCommitSha = response.data[0].sha
@@ -217,14 +221,14 @@ export async function commitFiles(
     const { owner, repo } = parseGithubUrl(githubUrl)
     console.log('getting latest commit sha & treeSha')
     let response = await octokit.repos.listCommits({
-        // TODO not sure all this is necessary, maybe github handle this
         ...parseGithubUrl(githubUrl),
         sha: branch,
         per_page: 1,
     })
     const latestCommitSha = response.data[0].sha
     const treeSha = response.data[0].commit.tree.sha
-    // console.log(`commit sha: ${latestCommitSha}, tree sha: ${treeSha}`)
+
+    console.log(`commit using commit sha: '${latestCommitSha}'`)
 
     console.log('creating tree')
     const treeResponse = await octokit.git.createTree({
@@ -254,7 +258,7 @@ export async function commitFiles(
     await octokit.git.updateRef({
         owner,
         repo,
-        force: true,
+        // force: true,
         sha: newCommitSha,
         ref: `heads/${branch}`, // sometimes is refs/
     })

@@ -71,6 +71,7 @@ describe('bot github operations', () => {
         const newBranchName = uuid.v4()
         await createBranch(octokit, {
             githubUrl: botOwnedGithubUrl,
+            fromBranch: 'master',
             name: newBranchName,
         })
         // console.log(forkRes.branchRef)

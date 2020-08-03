@@ -37,6 +37,7 @@ describe('github app', () => {
         const branchName = `edit-this-page/${uuid.v4().slice(0, 7)}`
         const branchRes = await createBranch(octokit, {
             githubUrl,
+            fromBranch: 'master',
             name: branchName,
         })
         let commitRes = await commitFiles(octokit, {

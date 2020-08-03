@@ -5,6 +5,7 @@ export type SubmitArgs = {
     filePath: string
     baseBranch: string
     title: string
+    body: string
     changedCode: string
 }
 

@@ -14,6 +14,7 @@ import {
     ThemeProvider,
     IconButton,
     Input,
+    Textarea,
     Button,
     Link,
     LightMode,
@@ -39,7 +40,6 @@ const X_PADDING = '40px'
 
 export function EditThisPageButton({
     unstyled,
-    dark,
     apiUrl = API_URL,
     children = 'Edit This Page',
     ...rest
@@ -60,6 +60,7 @@ export function EditThisPageButton({
     }, [])
     const [show, setShow] = useState(false)
     const [title, setTitle] = useState('')
+    const [body, setBody] = useState('')
     const [code, setCode] = useState(params?.editThisPageSourceCode || '')
     const [submitState, setSubmitState] = useState({
         loading: false,
@@ -84,6 +85,7 @@ export function EditThisPageButton({
             filePath: params.editThisPageFilePath,
             changedCode: code,
             title,
+            body,
             baseBranch: params.editThisPageBranch,
         })
             .then((r) => {
@@ -228,21 +230,31 @@ export function EditThisPageButton({
                                             }
                                         />
                                     </Stack>
+                                    <Stack
+                                        width='100%'
+                                        spacing='10px'
+                                        align='stretch'
+                                    >
+                                        <Box fontWeight='500'>Body</Box>
+                                        <Textarea
+                                            shadow='sm'
+                                            placeholder='Description of your changes'
+                                            resize='none'
+                                            minWidth='200px'
+                                            maxWidth='600px'
+                                            w='auto'
+                                            value={body}
+                                            onChange={(e) =>
+                                                setBody(e?.target?.value)
+                                            }
+                                        />
+                                    </Stack>
                                     {/* <Box flex='1' /> */}
-                                    <Box>
+                                    <Box lineHeight='2em'>
                                         A bot will open a pull request on github
                                         with the changes made <br />
-                                        You can{' '}
-                                        <Box
-                                            cursor='pointer'
-                                            color='blue.500'
-                                            d='inline'
-                                            mx='0.2em'
-                                        >
-                                            login with your github profile
-                                        </Box>
-                                        if you want to open the pr with your
-                                        account
+                                        You can mention yourself in the body to
+                                        get notified about the pr
                                     </Box>
                                     <Button
                                         fontWeight='600'

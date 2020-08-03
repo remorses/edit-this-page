@@ -1,7 +1,7 @@
 {
     "name": "babel-plugin-edit-this-page",
     "_": "[bump]",
-    "version": "0.0.22",
+    "version": "0.0.23",
     "description": "Babel plugin for edit-this-page",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

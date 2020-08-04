@@ -28,6 +28,16 @@ const handler: NextApiHandler = async (req, res) => {
             body,
         }: SubmitArgs = req.body
 
+        if (!githubUrl) {
+            throw new Error('github url is null')
+        }
+        if (!baseBranch) {
+            throw new Error('baseBranch is null')
+        }
+        if (!filePath) {
+            throw new Error('filePath is null')
+        }
+
         const octokit = await authenticateApp({ githubUrl })
 
         const { count } = await getPrsCount(octokit, {

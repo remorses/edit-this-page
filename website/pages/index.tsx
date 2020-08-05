@@ -29,6 +29,8 @@ const Page = () => (
     <LandingProvider position='relative' bg='white' primary='#3884FF'>
         <Box
             bg='gray.100'
+            left='50%'
+            top='-200px'
             transform='translateZ(-1000px) translateX(-50%) skewY(-20deg)'
             width='6000px'
             height='2000px'

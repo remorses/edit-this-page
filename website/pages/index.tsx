@@ -40,6 +40,7 @@ const Page = () => (
         />
         <NavBar
             position='relative'
+            marginTop='0px !important'
             logo={<Box width='30px' />}
             navs={[
                 <a href='https://github.com/remorses/edit-this-page'>Github</a>,

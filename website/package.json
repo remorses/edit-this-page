@@ -28,12 +28,15 @@
         "dokz": "latest",
         "edit-this-page": "*",
         "jsonwebtoken": "^8.5.1",
+        "landing-blocks": "^1.0.52",
         "memoizee": "^0.4.14",
         "next": "latest",
+        "next-images": "^1.4.1",
         "next-transpile-modules": "^4.0.2",
         "parse-github-url": "^1.0.2",
         "react": "16.13.1",
         "react-dom": "16.13.1",
+        "react-icons": "^3.10.0",
         "uuid": "^8.3.0"
     },
     "devDependencies": {

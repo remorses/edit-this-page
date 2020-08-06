@@ -33,7 +33,7 @@ import step2Image from '../public/steps/2.jpg'
 import step3Image from '../public/steps/3.png'
 
 const Page = () => (
-    <LandingProvider position='relative' bg='white' primary='#3884FF'>
+    <LandingProvider position='relative' bg='white' primary='#2BB36F'>
         <Box
             bg='gray.100'
             left='50%'

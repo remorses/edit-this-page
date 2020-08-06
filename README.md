@@ -46,7 +46,7 @@ The react component will open a modal to edit your page contents
 ```tsx
 import EditThisPageButton from 'edit-this-page'
 
-export function Page() {
+export function App() {
     return (
         <MyApp>
             <EditThisPageButton />

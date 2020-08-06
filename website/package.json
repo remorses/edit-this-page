@@ -25,7 +25,7 @@
         "babel-plugin-edit-this-page": "*",
         "cors": "^2.8.5",
         "dayjs": "^1.8.31",
-        "dokz": "latest",
+        "dokz": "^1.0.63",
         "edit-this-page": "*",
         "jsonwebtoken": "^8.5.1",
         "landing-blocks": "^1.0.53",

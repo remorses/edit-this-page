@@ -78,15 +78,18 @@ const Page = () => (
             features={[
                 {
                     heading: 'More contributions',
-                    subheading: 'You can use your iwn react components',
+                    subheading:
+                        'Many users would love to contribute to your content!',
                 },
                 {
-                    heading: 'Github automatic PR',
-                    subheading: 'follows the dircetory file system',
+                    heading: 'Easy review on Github PR',
+                    subheading:
+                        'Every change opens a github PR to let you easily review and merge changes',
                 },
                 {
                     heading: 'Babel and React',
-                    subheading: 'follows the dircetory file system',
+                    subheading:
+                        'Works on any website that uses babel and react, read the guide to see how',
                 },
             ]}
         />

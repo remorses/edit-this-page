@@ -14,6 +14,7 @@ export default function App(props) {
                 />
             </Head>
             <DokzProvider
+                docsRootPath='pages/docs'
                 headerItems={[
                     <GithubLink
                         key='0'

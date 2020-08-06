@@ -1,36 +1,88 @@
 ---
-name: Another Document
+name: Getting Started
 ---
-import { EditThisPageButton } from 'edit-this-page/src'
-import { Playground } from 'dokz'
 
-# Main Heading
+import { Image } from '@chakra-ui/core'
 
-<EditThisPageButton/>
+# Getting started
 
-Officia do eu reprehenderit laborum exercitation eu nisi deserunt aliqua consequat eiusmod.
+Edit-this-page Is made up by 2 packages:
 
-Duis incididunt fugiat est aliqua deserunt do aliquip laboris in exercitation laboris nulla minim incididunt.
+-   `babel-plugin-edit-this-page` is a babel plugin that passes your source code to the button component, this is necessary to populate the initial content of the textarea
+-   `edit-this-page` is a package that exports the button react component and the modal
 
-> This is a note, use the > character before a line
+The button exported from `edit-this-page` will open up a modal to change the current page source code, on submit a bot will create a PR on the github repo
 
-## Second Heading
+The pull request will be opened by a Github App, to enable this feature you will need to give the bot access to open pull requests on your repo at [https://github.com/apps/edit-this-page-app](https://github.com/apps/edit-this-page-app)
 
-Quis ullamco id duis sit ipsum laborum fugiat occaecat. Commodo aliqua adipisicing non nisi. Dolore aute magna cupidatat qui quis laboris. Irure veniam deserunt veniam ullamco anim pariatur deserunt. Amet commodo aliqua ut fugiat sunt pariatur ullamco cillum duis ipsum amet anim incididunt. Ut esse dolore in ullamco enim sit cillum eu labore consectetur labore sunt.
+Here are the steps to enable this feature
 
-### third Heading
+> You can try it right now clicking on the "edit this page" button on the top right corner
 
-Here is some code
+## 1. Install
 
-```js
-const x = 'fucking'
-console.log('hello ' + x + ' world')
+Install the dependencies
+
+```sh
+yarn add babel-plugin-edit-this-page edit-this-page @chakra-ui/core @emotion/core @emotion/styled
 ```
 
-## Using the playground
+Add it to your babel config next to `next.config.js`
 
-You can use live react code to display react component with a preview
+```js
+// babel.config.js
+module.exports = {
+    // presets: ['next/babel'], add your personal presets here
+    plugins: [
+        [
+            'edit-this-page',
+            {
+                editableFiles: 'pages/**',
+                githubUrl: 'myusername/myrepo',
+                branch: 'master',
+            },
+        ],
+    ],
+}
+```
 
-<Playground>
-    <div style={{ height: 100, background: 'lightblue' }}></div>
-</Playground>
+## 2. Install the github application
+
+Go to [https://github.com/apps/edit-this-page-app](https://github.com/apps/edit-this-page-app) and install the `Edit This Page` application on your repo
+
+<img src='/edit-this-page/github_app.jpg' width='800px' />
+
+## 3. Add the button
+
+Import and render the button on your react page
+
+The button will open a modal with a textarea to change the page contents, after the users submit a github PR will be opened on Github
+
+```jsx
+import EditThisPageButton from 'edit-this-page'
+
+export function App() {
+    return (
+        <MyApp>
+            {/* render the default button */}
+            <EditThisPageButton />
+
+            {/* render your own button */}
+            <EditThisPageButton unstyled>
+                <MyButton>edit this page</MyButton>
+            </EditThisPageButton>
+        </MyApp>
+    )
+}
+```
+
+## 4. Try it out
+
+You can now let your readers extend your documentation
+
+<video
+    src='/edit-this-page/video.mp4'
+    width='800px'
+    autoplay='true'
+    loop='true'
+/>

@@ -4951,10 +4951,10 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-landing-blocks@^1.0.52:
-  version "1.0.52"
-  resolved "https://registry.yarnpkg.com/landing-blocks/-/landing-blocks-1.0.52.tgz#6af9acc472b04c9598e5df67c8b052d8a1a40e79"
-  integrity sha512-irzknW78Qpa8MyvOzJ4ZxpZXNsgvsE06zixr+8ZvDmBsCm+5J7414kByZsHniTfvveTVKYHFTqEYQoXNcHI4+Q==
+landing-blocks@^1.0.53:
+  version "1.0.53"
+  resolved "https://registry.yarnpkg.com/landing-blocks/-/landing-blocks-1.0.53.tgz#95970489770134bb3b99f6ca00eb743cfe2f2af1"
+  integrity sha512-0odFJuyqEp6XSHyV86sJmNqbF+wUxkLGINIBRQkS0vgStfmL+rWnooZvANPMg+6EeUSNaYuOzODMP5AO/tQFXg==
   dependencies:
     "@emotion/styled" "^10.0.27"
     baby-i-am-faded "^0.0.12"

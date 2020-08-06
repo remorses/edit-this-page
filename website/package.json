@@ -28,7 +28,7 @@
         "dokz": "latest",
         "edit-this-page": "*",
         "jsonwebtoken": "^8.5.1",
-        "landing-blocks": "^1.0.52",
+        "landing-blocks": "^1.0.53",
         "memoizee": "^0.4.14",
         "next": "latest",
         "next-images": "^1.4.1",

@@ -1,7 +1,9 @@
-import { Box, Image, Stack } from '@chakra-ui/core'
-import { FiCode, FiFile, FiFileText } from 'react-icons/fi'
+// @jsx jsx
+import { Box, Stack } from 'layout-kit-react'
+import { FaArrowRight as ArrowRight } from 'react-icons/fa'
 import {
     Button,
+    Image,
     Footer,
     // Hero,
     Link,
@@ -14,16 +16,21 @@ import {
     Subheading,
     Hero,
     TestimonialsTweets,
+    TestimonialsLogos,
     Bullet,
     FeaturesList,
 } from 'landing-blocks/src'
 import { GradientCurtains } from 'landing-blocks/src/decorations'
 import React from 'react'
+import { css, jsx } from '@emotion/core'
 import NextLink from 'next/link'
 
 import editorImage from '../public/editor.jpeg'
 import siteImage from '../public/site.jpeg'
 import prImage from '../public/pr.jpeg'
+import step1Image from '../public/steps/1.jpg'
+import step2Image from '../public/steps/2.jpg'
+import step3Image from '../public/steps/3.png'
 
 const Page = () => (
     <LandingProvider position='relative' bg='white' primary='#3884FF'>
@@ -63,7 +70,30 @@ const Page = () => (
 
             // fingerprint='Already using Airtable? Sign in'
         />
-        <Box
+        <Stack
+            spacing='10'
+            position='relative'
+            width='100%'
+            direction={['column', null, null, 'row']}
+            alignSelf='center'
+            align='center'
+            justify='center'
+        >
+            <Image borderRadius='md' src={step1Image} height='260px' />
+            <ArrowRight fontSize='20px' />
+            <Image borderRadius='md' src={step2Image} height='260px' />
+            <ArrowRight fontSize='20px' />
+            <Image
+                borderRadius='md'
+                css={css`
+                    mix-blend-mode: exclusion;
+                `}
+                src={step3Image}
+                height='260px'
+            />
+        </Stack>
+        <TestimonialsLogos testimonials={[]} />
+        {/* <Box
             position='relative'
             alignSelf='center'
             shadow='xl'
@@ -76,28 +106,7 @@ const Page = () => (
                 src={'edit-this-page-video.mp4'}
                 width='700px'
             />
-        </Box>
-        <FeaturesList
-            centerText
-            // bg='gray.900'
-            features={[
-                {
-                    heading: 'More contributions',
-                    subheading:
-                        'Many users would love to contribute to your content! Let them do it!',
-                },
-                {
-                    heading: 'Easy review on Github PR',
-                    subheading:
-                        'Every change opens a github PR to let you easily review and merge changes',
-                },
-                {
-                    heading: 'Made with Babel, React',
-                    subheading:
-                        'Works on any website that uses babel and react, read the guide to see how',
-                },
-            ]}
-        />
+        </Box> */}
 
         <HowItWorks
             heading='Let your users write and edit your content'
@@ -159,6 +168,27 @@ const Page = () => (
                     ]}
                 />
             </Section> */}
+        <FeaturesList
+            centerText
+            // bg='gray.900'
+            features={[
+                {
+                    heading: 'More contributions',
+                    subheading:
+                        'Many users would love to contribute to your content! Let them do it!',
+                },
+                {
+                    heading: 'Easy review on Github PR',
+                    subheading:
+                        'Every change opens a github PR to let you easily review and merge changes',
+                },
+                {
+                    heading: 'Made with Babel, React',
+                    subheading:
+                        'Works on any website that uses babel and react, read the guide to see how',
+                },
+            ]}
+        />
         <Footer
             businessName='Made by @morse__'
             columns={{

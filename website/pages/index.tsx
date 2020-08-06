@@ -59,6 +59,7 @@ const Page = () => (
         />
         <Hero
             position='relative'
+            cta={<CtaButton />}
             // cta={<EmailForm />}
             heading='Make your website editable by everyone'
             subheading={

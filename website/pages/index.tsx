@@ -54,7 +54,12 @@ const Page = () => (
             position='relative'
             // cta={<EmailForm />}
             heading='Make your website editable by everyone'
-            subheading='Users suggested changes open a pull request on Github'
+            subheading={
+                <>
+                    Users can suggest changes without leaving the site, <br /> a
+                    pull request is automatically opened on Github
+                </>
+            }
 
             // fingerprint='Already using Airtable? Sign in'
         />
@@ -79,7 +84,7 @@ const Page = () => (
                 {
                     heading: 'More contributions',
                     subheading:
-                        'Many users would love to contribute to your content!',
+                        'Many users would love to contribute to your content! Let them do it!',
                 },
                 {
                     heading: 'Easy review on Github PR',
@@ -87,7 +92,7 @@ const Page = () => (
                         'Every change opens a github PR to let you easily review and merge changes',
                 },
                 {
-                    heading: 'Babel and React',
+                    heading: 'Made with Babel, React',
                     subheading:
                         'Works on any website that uses babel and react, read the guide to see how',
                 },
@@ -100,17 +105,19 @@ const Page = () => (
             subheading='Users can open a pull request without leaving the site, pressing just one button'
             steps={[
                 {
-                    heading: 'Add the babel-plugin',
+                    heading: 'Add the babel-plugin and react component',
+                    decorativeHeading: 'Install',
                     subheading:
-                        'You can also include your own react components thanks to MDX',
+                        'You need to add a babel plugin and a react button to your editable pages',
                     image: (
                         <Image borderRadius='md' shadow='xl' src={siteImage} />
                     ),
                 },
                 {
                     heading: 'Authorize the Github App',
+                    decorativeHeading: 'Authorize',
                     subheading:
-                        'The website is based on Nextjs so you get all its niceties: live reloading, easy configuration and easy deploy',
+                        'The Github App will open the prs when the users suggest new edits',
                     image: (
                         <Image
                             borderRadius='md'
@@ -121,8 +128,9 @@ const Page = () => (
                 },
                 {
                     heading: 'Let your users suggest edits',
+                    decorativeHeading: 'Get contributions',
                     subheading:
-                        'Dokz export a completely static website you can deploy everywhere',
+                        'Now users can press a button to edit your website, they can fix errors or add more information',
                     image: (
                         <Image borderRadius='md' shadow='xl' src={prImage} />
                     ),

@@ -1,6 +1,7 @@
 import { DokzProvider, GithubLink, ColorModeSwitch } from 'dokz/dist'
 import React, { Fragment } from 'react'
 import Head from 'next/head'
+import { Box } from '@chakra-ui/core'
 
 export default function App(props) {
     const { Component, pageProps } = props
@@ -15,6 +16,7 @@ export default function App(props) {
             </Head>
             <DokzProvider
                 docsRootPath='pages/docs'
+                headerLogo={<Box />}
                 headerItems={[
                     <GithubLink
                         key='0'

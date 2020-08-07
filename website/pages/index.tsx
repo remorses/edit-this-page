@@ -84,14 +84,7 @@ const Page = () => (
             <ArrowRight fontSize='20px' />
             <Image borderRadius='md' src={step2Image} height='260px' />
             <ArrowRight fontSize='20px' />
-            <Image
-                borderRadius='md'
-                css={css`
-                    mix-blend-mode: exclusion;
-                `}
-                src={step3Image}
-                height='260px'
-            />
+            <Image borderRadius='md' src={step3Image} height='260px' />
         </Stack>
         <TestimonialsLogos testimonials={[]} />
         {/* <Box
